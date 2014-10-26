@@ -6,23 +6,110 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>765</width>
-    <height>552</height>
+    <width>1040</width>
+    <height>657</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Payroll</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QMdiArea" name="mdiArea"/>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>765</width>
+     <width>1040</width>
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionHome"/>
+    <addaction name="actionBackup_Restore"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose_Company_Logoff"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionPay_Types"/>
+    <addaction name="actionStatutory_Rates"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreferences"/>
+    <addaction name="separator"/>
+    <addaction name="actionDepartments"/>
+    <addaction name="actionJob_Titles"/>
+    <addaction name="actionJob_Groups"/>
+   </widget>
+   <widget class="QMenu" name="menuCompany">
+    <property name="title">
+     <string>Company</string>
+    </property>
+    <addaction name="actionCompany_Info"/>
+    <addaction name="actionUser_Manager"/>
+    <addaction name="separator"/>
+    <addaction name="actionClose_Month"/>
+   </widget>
+   <widget class="QMenu" name="menuEmployees">
+    <property name="title">
+     <string>Employees</string>
+    </property>
+    <addaction name="actionEmployee_List"/>
+    <addaction name="separator"/>
+    <addaction name="actionRecruit"/>
+    <addaction name="actionTerminate"/>
+    <addaction name="separator"/>
+    <addaction name="actionPay"/>
+    <addaction name="actionEnter_OT"/>
+    <addaction name="actionEnter_Leave"/>
+    <addaction name="actionLoans"/>
+    <addaction name="separator"/>
+    <addaction name="actionPayslips"/>
+    <addaction name="actionAttendance"/>
+   </widget>
+   <widget class="QMenu" name="menuPayroll">
+    <property name="title">
+     <string>Payroll</string>
+    </property>
+    <addaction name="actionPayroll_Master"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuReports">
+    <property name="title">
+     <string>Reports</string>
+    </property>
+    <addaction name="actionPayslips_2"/>
+    <addaction name="actionPayroll"/>
+    <addaction name="actionLoan_Schedule"/>
+    <addaction name="actionLeave"/>
+    <addaction name="actionAttendance_2"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionPayroll_Help_Topics"/>
+    <addaction name="actionAbout_Payroll"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuCompany"/>
+   <addaction name="menuEmployees"/>
+   <addaction name="menuPayroll"/>
+   <addaction name="menuReports"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -31,8 +118,170 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionHome"/>
+   <addaction name="separator"/>
+   <addaction name="actionCompany_Info"/>
+   <addaction name="actionEmployee_List"/>
+   <addaction name="separator"/>
+   <addaction name="actionPay"/>
+   <addaction name="actionEnter_OT"/>
+   <addaction name="actionEnter_Leave"/>
+   <addaction name="actionLoans"/>
+   <addaction name="separator"/>
+   <addaction name="actionPayroll_Master"/>
+   <addaction name="actionPayslips_2"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionBackup_Restore">
+   <property name="text">
+    <string>Backup/Restore</string>
+   </property>
+  </action>
+  <action name="actionClose_Company_Logoff">
+   <property name="text">
+    <string>Close Company / Logoff</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionHome">
+   <property name="text">
+    <string>Home</string>
+   </property>
+  </action>
+  <action name="actionPay_Types">
+   <property name="text">
+    <string>Pay Types</string>
+   </property>
+  </action>
+  <action name="actionStatutory_Rates">
+   <property name="text">
+    <string>Statutory Rates</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionCompany_Info">
+   <property name="text">
+    <string>Company Info</string>
+   </property>
+  </action>
+  <action name="actionUser_Manager">
+   <property name="text">
+    <string>User Manager</string>
+   </property>
+  </action>
+  <action name="actionClose_Month">
+   <property name="text">
+    <string>Close Month</string>
+   </property>
+  </action>
+  <action name="actionEmployee_List">
+   <property name="text">
+    <string>Employee List</string>
+   </property>
+  </action>
+  <action name="actionRecruit">
+   <property name="text">
+    <string>Recruit</string>
+   </property>
+  </action>
+  <action name="actionTerminate">
+   <property name="text">
+    <string>Terminate</string>
+   </property>
+  </action>
+  <action name="actionPay">
+   <property name="text">
+    <string>Pay</string>
+   </property>
+  </action>
+  <action name="actionEnter_OT">
+   <property name="text">
+    <string>Enter OT</string>
+   </property>
+  </action>
+  <action name="actionEnter_Leave">
+   <property name="text">
+    <string>Enter Leave</string>
+   </property>
+  </action>
+  <action name="actionLoans">
+   <property name="text">
+    <string>Loans</string>
+   </property>
+  </action>
+  <action name="actionPayslips">
+   <property name="text">
+    <string>Payslips</string>
+   </property>
+  </action>
+  <action name="actionAttendance">
+   <property name="text">
+    <string>Attendance</string>
+   </property>
+  </action>
+  <action name="actionDepartments">
+   <property name="text">
+    <string>Departments</string>
+   </property>
+  </action>
+  <action name="actionJob_Titles">
+   <property name="text">
+    <string>Job Titles</string>
+   </property>
+  </action>
+  <action name="actionJob_Groups">
+   <property name="text">
+    <string>Job Groups</string>
+   </property>
+  </action>
+  <action name="actionPayroll_Master">
+   <property name="text">
+    <string>Payroll Master</string>
+   </property>
+  </action>
+  <action name="actionPayslips_2">
+   <property name="text">
+    <string>Payslips</string>
+   </property>
+  </action>
+  <action name="actionPayroll">
+   <property name="text">
+    <string>Payroll</string>
+   </property>
+  </action>
+  <action name="actionLoan_Schedule">
+   <property name="text">
+    <string>Loan Schedule</string>
+   </property>
+  </action>
+  <action name="actionLeave">
+   <property name="text">
+    <string>Leave</string>
+   </property>
+  </action>
+  <action name="actionAttendance_2">
+   <property name="text">
+    <string>Attendance</string>
+   </property>
+  </action>
+  <action name="actionPayroll_Help_Topics">
+   <property name="text">
+    <string>Payroll Help Topics</string>
+   </property>
+  </action>
+  <action name="actionAbout_Payroll">
+   <property name="text">
+    <string>About Payroll</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
