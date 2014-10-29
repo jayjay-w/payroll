@@ -36,5 +36,4 @@ FORMS    += payrollmainwindow.ui \
 RESOURCES += \
     res.qrc
 
-RC_FILE += \
-    Windows.rc
+RC_FILE = Windows.rc
