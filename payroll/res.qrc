@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/SEO-disabled-icon.png</file>
+        <file>images/Calendar-icon.png</file>
+        <file>images/Business-Overtime-icon.png</file>
+        <file>images/Money-icon (1).png</file>
+        <file>images/app.ico</file>
+        <file>images/money-icon.png</file>
+        <file>images/atm-money-icon.png</file>
+        <file>images/Preppy-icon.png</file>
+        <file>images/user-group-icon.png</file>
+        <file>images/university-icon.png</file>
+        <file>images/File-Delete-icon.png</file>
+        <file>images/Backup-2-icon.png</file>
+        <file>images/Backup-Folder-Blue-icon.png</file>
+        <file>images/folder-open-icon.png</file>
+        <file>images/open-file-icon.png</file>
+        <file>images/Actions-document-save-icon.png</file>
+        <file>images/Save-icon.png</file>
+        <file>images/new-file-icon.png</file>
+        <file>images/Files-New-File-icon.png</file>
+    </qresource>
+</RCC>

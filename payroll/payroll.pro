@@ -32,3 +32,9 @@ FORMS    += payrollmainwindow.ui \
     newcompanydialog.ui \
     companyinitializationdialog.ui \
     paytypesdialog.ui
+
+RESOURCES += \
+    res.qrc
+
+RC_FILE += \
+    Windows.rc
