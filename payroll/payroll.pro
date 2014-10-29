@@ -14,10 +14,18 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         payrollmainwindow.cpp \
-    homewindow.cpp
+    homewindow.cpp \
+    publics.cpp \
+    newcompanydialog.cpp \
+    companyinitializationdialog.cpp
 
 HEADERS  += payrollmainwindow.h \
-    homewindow.h
+    homewindow.h \
+    publics.h \
+    newcompanydialog.h \
+    companyinitializationdialog.h
 
 FORMS    += payrollmainwindow.ui \
-    homewindow.ui
+    homewindow.ui \
+    newcompanydialog.ui \
+    companyinitializationdialog.ui
