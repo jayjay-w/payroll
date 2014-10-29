@@ -55,7 +55,7 @@ QString Publics::getSql(SQL_STRING sqlString)
     case SQL_YEARS:
 	    return "CREATE TABLE IF NOT EXISTS 'Years' ('YearID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'Year' INTEGER)";
     case SQL_PAYROLLMONTHS:
-	    return "CREATE TABLE 'PayrollMonths' ('PayrollMonthID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+	    return "CREATE TABLE IF NOT EXISTS 'PayrollMonths' ('PayrollMonthID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
 			    "'YearID' INTEGER, 'MonthID' INTEGER, 'Year' TEXT, "
 			    "'Month' TEXT, 'Closed' INTEGER, LastEdited TEXT)";
     default:
