@@ -17,15 +17,18 @@ SOURCES += main.cpp\
     homewindow.cpp \
     publics.cpp \
     newcompanydialog.cpp \
-    companyinitializationdialog.cpp
+    companyinitializationdialog.cpp \
+    paytypesdialog.cpp
 
 HEADERS  += payrollmainwindow.h \
     homewindow.h \
     publics.h \
     newcompanydialog.h \
-    companyinitializationdialog.h
+    companyinitializationdialog.h \
+    paytypesdialog.h
 
 FORMS    += payrollmainwindow.ui \
     homewindow.ui \
     newcompanydialog.ui \
-    companyinitializationdialog.ui
+    companyinitializationdialog.ui \
+    paytypesdialog.ui
