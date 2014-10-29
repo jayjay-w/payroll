@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>857</width>
+    <width>996</width>
     <height>541</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Payroll</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/images/atm-money-icon.png</normaloff>:/images/atm-money-icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -129,7 +133,7 @@ color: rgb(255, 255, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>857</width>
+     <width>996</width>
      <height>22</height>
     </rect>
    </property>
@@ -228,36 +232,21 @@ color: rgb(255, 255, 255);</string>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionCompany_Info"/>
-   <addaction name="actionEmployee_List"/>
-   <addaction name="separator"/>
-   <addaction name="actionPay"/>
-   <addaction name="separator"/>
-   <addaction name="actionPayslips_2"/>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QToolBar" name="toolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonTextUnderIcon</enum>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>true</bool>
-   </attribute>
    <addaction name="action_New"/>
    <addaction name="action_Open"/>
    <addaction name="separator"/>
    <addaction name="action_Save"/>
    <addaction name="separator"/>
    <addaction name="actionBackup_Restore"/>
+   <addaction name="actionCompany_Info"/>
+   <addaction name="actionEmployee_List"/>
+   <addaction name="separator"/>
+   <addaction name="actionPay"/>
+   <addaction name="actionPayslips_2"/>
    <addaction name="separator"/>
    <addaction name="actionClose_Company_Logoff"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionBackup_Restore">
    <property name="icon">
     <iconset resource="res.qrc">
