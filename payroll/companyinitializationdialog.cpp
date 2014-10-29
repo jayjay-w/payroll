@@ -1,6 +1,6 @@
 #include "companyinitializationdialog.h"
 #include "ui_companyinitializationdialog.h"
-
+#include "publics.h"
 CompanyInitializationDialog::CompanyInitializationDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CompanyInitializationDialog)
@@ -37,6 +37,16 @@ DatabaseInitThread::DatabaseInitThread(QObject *parent) :
 void DatabaseInitThread::run()
 {
     QSqlDatabase db = QSqlDatabase::database();
+    //Create tables
+    db.exec(Publics::getSql(Publics::SQL_MONTHNAMES));
+    if (db.lastError().isValid())
+	    qDebug() << db.lastError().text();
+    db.exec(Publics::getSql(Publics::SQL_YEARS));
+    if (db.lastError().isValid())
+	    qDebug() << db.lastError().text();
+    db.exec(Publics::getSql(Publics::SQL_PAYROLLMONTHS));
+    if (db.lastError().isValid())
+	    qDebug() << db.lastError().text();
     int minYear = QDate::currentDate().year() - 1;
     int maxYear = minYear + 5;
     //Prepare Years

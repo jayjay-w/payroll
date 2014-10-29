@@ -48,8 +48,17 @@ QString Publics::getSql(SQL_STRING sqlString)
         case SQL_COMPANY_TABLE:
             return "CREATE TABLE IF NOT EXISTS 'company' ('CompanyName' Text, 'NSSF' Text, 'NHIF' Text, 'PinNo' Text, 'VATNo' Text,"
                     "'Address' Text, 'PostCode' Text, 'Town' Text, 'Mobile' Text, 'Tel1' Text, 'Tel2' Text, 'Fax' Text,"
-                    "'Email' Text, 'Website' Text, 'appName' Text DEFAULT('smpayroll'), 'CurrentMonth' Integer)";
-        default:
+		    "'Email' Text, 'Website' Text, 'appName' Text DEFAULT('smpayroll'), 'CurrentMonth' Integer, 'dbVersion' TEXT DEFAULT('1.0'))";
+	case SQL_MONTHNAMES:
+	    return "CREATE TABLE IF NOT EXISTS 'MonthNames' ('MonthID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+			    "'MonthNo' Integer, 'MonthName' Text)";
+    case SQL_YEARS:
+	    return "CREATE TABLE IF NOT EXISTS 'Years' ('YearID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'Year' INTEGER)";
+    case SQL_PAYROLLMONTHS:
+	    return "CREATE TABLE 'PayrollMonths' ('PayrollMonthID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
+			    "'YearID' INTEGER, 'MonthID' INTEGER, 'Year' TEXT, "
+			    "'Month' TEXT, 'Closed' INTEGER, LastEdited TEXT)";
+    default:
             return "";
     }
 }
