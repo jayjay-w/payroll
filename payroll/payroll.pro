@@ -37,3 +37,5 @@ RESOURCES += \
     res.qrc
 
 RC_FILE = Windows.rc
+
+ICON = atm.icns
