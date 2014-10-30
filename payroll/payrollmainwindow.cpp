@@ -90,6 +90,7 @@ void PayrollMainWindow::loadFile(const QString &fileName)
 	Publics::loadQueryToCombo("SELECT * FROM MonthNames", "MonthName", ui->cboMonth);
 	//Check for currentmonth
 	QString curMonthID = Publics::getDbValue("SELECT * FROM Company", "CurrentMonth").toString();
+	qDebug() << curMonthID;
 	if (curMonthID.length() < 1) {
 		//No current month specified, so use the current calendar month
 		QString cMonthID = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE Year = '"
@@ -254,6 +255,7 @@ void PayrollMainWindow::on_cmdMonthNext_clicked()
 
 	ui->cboMonth->setCurrentIndex(monthIndex);
 	ui->cboYear->setCurrentIndex(yearIndex);
+	uiMonthChange();
 }
 
 void PayrollMainWindow::on_cmdMonthBack_clicked()
@@ -274,6 +276,7 @@ void PayrollMainWindow::on_cmdMonthBack_clicked()
 
 	ui->cboMonth->setCurrentIndex(monthIndex);
 	ui->cboYear->setCurrentIndex(yearIndex);
+	uiMonthChange();
 }
 
 void PayrollMainWindow::on_actionPay_Types_triggered()

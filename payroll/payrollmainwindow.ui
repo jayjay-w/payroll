@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="res.qrc">
-    <normaloff>:/images/atm-money-icon.png</normaloff>:/images/atm-money-icon.png</iconset>
+    <normaloff>:/images/P.png</normaloff>:/images/P.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">

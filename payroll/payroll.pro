@@ -38,4 +38,4 @@ RESOURCES += \
 
 RC_FILE = Windows.rc
 
-ICON = atm.icns
+ICON = P.icns

@@ -19,5 +19,6 @@
         <file>images/Save-icon.png</file>
         <file>images/new-file-icon.png</file>
         <file>images/Files-New-File-icon.png</file>
+        <file>images/P.png</file>
     </qresource>
 </RCC>
