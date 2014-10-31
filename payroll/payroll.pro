@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     newcompanydialog.cpp \
     companyinitializationdialog.cpp \
     paytypesdialog.cpp \
-    sqlmodels.cpp
+    sqlmodels.cpp \
+    employeecentre.cpp
 
 HEADERS  += payrollmainwindow.h \
     homewindow.h \
@@ -27,13 +28,15 @@ HEADERS  += payrollmainwindow.h \
     newcompanydialog.h \
     companyinitializationdialog.h \
     paytypesdialog.h \
-    sqlmodels.h
+    sqlmodels.h \
+    employeecentre.h
 
 FORMS    += payrollmainwindow.ui \
     homewindow.ui \
     newcompanydialog.ui \
     companyinitializationdialog.ui \
-    paytypesdialog.ui
+    paytypesdialog.ui \
+    employeecentre.ui
 
 RESOURCES += \
     res.qrc
