@@ -14,6 +14,10 @@ class CompanyInformationDialog : public QDialog
 public:
 	explicit CompanyInformationDialog(QWidget *parent = 0);
 	~CompanyInformationDialog();
+signals:
+	void dataChanged();
+private slots:
+	void on_cmdSave_clicked();
 
 private:
 	Ui::CompanyInformationDialog *ui;

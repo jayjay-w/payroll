@@ -5,6 +5,9 @@
 #include <QtSql>
 
 class QActionGroup;
+class EmployeeCentre;
+class PayTypesDialog;
+class CompanyInformationDialog;
 
 namespace Ui {
 class PayrollMainWindow;
@@ -36,6 +39,10 @@ private:
 	QActionGroup *actionsToDisable;
 	void initializeCompanyFile();
 	void showQueryError(QSqlQuery qu, QString title = "Error", QString textBefore = "Ther following error has occured:", QString textAfter = "Please contact your administrator.");
+	//Dialogs
+	EmployeeCentre *empCentre;
+	PayTypesDialog *payTypes;
+	CompanyInformationDialog *companyInfo;
 private slots:
 	void startNewCompany();
 	void openFile();
@@ -46,6 +53,9 @@ private slots:
 	void on_cmdMonthNext_clicked();
 	void on_cmdMonthBack_clicked();
 	void on_actionPay_Types_triggered();
+	void on_actionEmployee_List_triggered();
+	void on_actionCompany_Info_triggered();
+	void companyInformationChanged();
 };
 
 #endif // PAYROLLMAINWINDOW_H

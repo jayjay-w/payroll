@@ -4,11 +4,13 @@
 #include "companyinitializationdialog.h"
 #include <QActionGroup>
 #include "paytypesdialog.h"
-
+#include "employeecentre.h"
+#include "companyinformationdialog.h"
 
 PayrollMainWindow::PayrollMainWindow(QWidget *parent) :
 	QMainWindow(parent),
-	ui(new Ui::PayrollMainWindow)
+	ui(new Ui::PayrollMainWindow),
+	empCentre(0), payTypes(0), companyInfo(0)
 {
 	ui->setupUi(this);
 	//ActionGroup
@@ -281,6 +283,31 @@ void PayrollMainWindow::on_cmdMonthBack_clicked()
 
 void PayrollMainWindow::on_actionPay_Types_triggered()
 {
-	PayTypesDialog *pt = new PayTypesDialog(this);
-	pt->exec();
+	if (!payTypes)
+		payTypes = new PayTypesDialog(this);
+
+	payTypes->exec();
+}
+
+void PayrollMainWindow::on_actionEmployee_List_triggered()
+{
+	if (!empCentre)
+		empCentre = new EmployeeCentre(this);
+
+	empCentre->exec();
+}
+
+void PayrollMainWindow::on_actionCompany_Info_triggered()
+{
+	if (!companyInfo) {
+		companyInfo = new CompanyInformationDialog(this);
+		connect (companyInfo, SIGNAL(dataChanged()), SLOT(companyInformationChanged()));
+	}
+
+	companyInfo->exec();
+}
+
+void PayrollMainWindow::companyInformationChanged()
+{
+	uiMonthChange();
 }
