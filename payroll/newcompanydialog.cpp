@@ -54,7 +54,7 @@ void NewCompanyDialog::on_cmdCreateCompany_clicked()
 		return;
 	}
 
-	db.exec(Publics::getSql(Publics::SQL_COMPANY_TABLE));
+	db.exec(Publics::getSql(Publics::SQL_COMPANY));
 
 	if (!db.lastError().isValid()) {
 		QString insQu = "INSERT INTO Company(CompanyName, NSSF, NHIF, PinNo, VATNo, Address, Postcode, Town, Mobile"
