@@ -18,12 +18,14 @@ class Publics : public QObject
 public:
 	explicit Publics(QObject *parent = 0);
 	enum SQL_STRING {
-		SQL_COMPANY_TABLE,
-		SQL_EMPLOYEES_TABLE,
+        SQL_COMPANY,
+        SQL_EMPLOYEES,
 		SQL_YEARS,
 		SQL_MONTHNAMES,
 		SQL_PAYROLLMONTHS,
-		SQL_PAY_TYPES
+        SQL_PAY_TYPES,
+        SQL_DEPARTMENTS,
+        SQL_JOB_GROUPS
 	};
 
 	static QString lastPath();

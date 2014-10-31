@@ -42,6 +42,9 @@ void DatabaseInitThread::run()
 	executeInitSql(Publics::getSql(Publics::SQL_YEARS));
 	executeInitSql(Publics::getSql(Publics::SQL_PAYROLLMONTHS));
 	executeInitSql(Publics::getSql(Publics::SQL_PAY_TYPES));
+	executeInitSql(Publics::getSql(Publics::SQL_DEPARTMENTS));
+	executeInitSql(Publics::getSql(Publics::SQL_JOB_GROUPS));
+	executeInitSql(Publics::getSql(Publics::SQL_EMPLOYEES));
 
 	int minYear = QDate::currentDate().year() - 1;
 	int maxYear = minYear + 5;
