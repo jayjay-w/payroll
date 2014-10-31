@@ -14,7 +14,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         payrollmainwindow.cpp \
-    homewindow.cpp \
     publics.cpp \
     newcompanydialog.cpp \
     companyinitializationdialog.cpp \
@@ -23,7 +22,6 @@ SOURCES += main.cpp\
     employeecentre.cpp
 
 HEADERS  += payrollmainwindow.h \
-    homewindow.h \
     publics.h \
     newcompanydialog.h \
     companyinitializationdialog.h \
@@ -32,7 +30,6 @@ HEADERS  += payrollmainwindow.h \
     employeecentre.h
 
 FORMS    += payrollmainwindow.ui \
-    homewindow.ui \
     newcompanydialog.ui \
     companyinitializationdialog.ui \
     paytypesdialog.ui \
