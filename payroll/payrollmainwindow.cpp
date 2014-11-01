@@ -9,12 +9,14 @@
 
 PayrollMainWindow::PayrollMainWindow(QWidget *parent) :
 	QMainWindow(parent),
-	ui(new Ui::PayrollMainWindow),
-	empCentre(0), payTypes(0), companyInfo(0)
+	empCentre(0), payTypes(0), companyInfo(0), actionsToDisable(0),
+	ui(new Ui::PayrollMainWindow)
 {
 	ui->setupUi(this);
 	//ActionGroup
-	actionsToDisable = new QActionGroup(this);
+	if (!actionsToDisable)
+		actionsToDisable = new QActionGroup(this);
+
 	actionsToDisable->addAction(ui->actionAttendance);
 	actionsToDisable->addAction(ui->actionAttendance_2);
 	//actionsToDisable->addAction(ui->actionBackup_Restore);
@@ -40,6 +42,8 @@ PayrollMainWindow::PayrollMainWindow(QWidget *parent) :
 	actionsToDisable->addAction(ui->actionRecruit);
 	actionsToDisable->addAction(ui->actionStatutory_Rates);
 	actionsToDisable->addAction(ui->actionUser_Manager);
+
+	actionsToDisable->setDisabled(true);
 	//Recent file actions
 	ui->menuRecent_Files->clear();
 	for (int i = 0; i < MaxRecentFiles; ++i) {
@@ -66,6 +70,8 @@ PayrollMainWindow::~PayrollMainWindow()
 
 void PayrollMainWindow::loadFile(const QString &fileName)
 {
+	qDebug() << fileName;
+
 	if (fileName.isNull()) {
 		openFile();
 		return;
@@ -195,7 +201,8 @@ void PayrollMainWindow::startNewCompany()
 {
 	NewCompanyDialog *newC = new NewCompanyDialog(this);
 	if (newC->exec() == QDialog::Accepted) {
-		loadFile(newC->companyFileLocation);
+		//loadFile(newC->companyFileLocation);
+		this->loadFile(newC->companyFileLocation);
 	}
 }
 

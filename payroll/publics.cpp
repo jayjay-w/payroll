@@ -97,13 +97,13 @@ QVariant Publics::getDbValue(QString query, QString returnCol)
 	return qu.record().value(returnCol);
 }
 
-QVariant Publics::loadQueryToCombo(QString query, QString col, QComboBox *cbo)
+void Publics::loadQueryToCombo(QString query, QString col, QComboBox *cbo, QVariant userData)
 {
 	cbo->clear();
 	QSqlDatabase db = QSqlDatabase::database();
 	QSqlQuery qu = db.exec(query);
 	while (qu.next()) {
-		cbo->addItem(qu.record().value(col).toString());
+		cbo->addItem(qu.record().value(col).toString(), userData);
 	}
 }
 
