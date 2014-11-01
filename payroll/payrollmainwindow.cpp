@@ -7,6 +7,7 @@
 #include "employeecentre.h"
 #include "companyinformationdialog.h"
 #include "changemonthdialog.h"
+#include "aboutdialog.h"
 
 PayrollMainWindow *PayrollMainWindow::m_instance = NULL;
 
@@ -16,6 +17,7 @@ PayrollMainWindow::PayrollMainWindow() : QMainWindow(),
 	actionsToDisable(0),
 	payTypes(0),
 	companyInfo(0),
+	aboutPayroll(new AboutDialog(this)),
 	ui(new Ui::PayrollMainWindow)
 {
 	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
@@ -298,4 +300,12 @@ void PayrollMainWindow::on_actionChange_Month_triggered()
 	}
 
 	monthChanger->exec();
+}
+
+void PayrollMainWindow::on_actionAbout_Payroll_triggered()
+{
+	if (!aboutPayroll)
+		aboutPayroll = new AboutDialog(this);
+
+	aboutPayroll->exec();
 }

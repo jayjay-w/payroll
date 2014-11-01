@@ -9,6 +9,7 @@ class EmployeeCentre;
 class PayTypesDialog;
 class CompanyInformationDialog;
 class ChangeMonthDialog;
+class AboutDialog;
 
 namespace Ui {
 class PayrollMainWindow;
@@ -48,6 +49,7 @@ private:
 	PayTypesDialog *payTypes;
 	CompanyInformationDialog *companyInfo;
 	ChangeMonthDialog *monthChanger;
+	AboutDialog *aboutPayroll;
 private slots:
 	void startNewCompany();
 	void openFile();
@@ -60,6 +62,7 @@ private slots:
 	void on_actionCompany_Info_triggered();
 	void companyInformationChanged();
 	void on_actionChange_Month_triggered();
+	void on_actionAbout_Payroll_triggered();
 };
 
 #endif // PAYROLLMAINWINDOW_H
