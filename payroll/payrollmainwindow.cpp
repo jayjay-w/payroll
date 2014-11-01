@@ -244,13 +244,14 @@ void PayrollMainWindow::currentMonthChanged()
 void PayrollMainWindow::uiMonthChange()
 {
 	QString cMonthID = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE Year = '"
-					       + QString::number(QDate::currentDate().year())
-					       + "' AND Month = '" + QDate::currentDate().toString("MMMM") + "'", "PayrollMonthID").toString();
+					       + ui->cboYear->currentText()
+					       + "' AND Month = '" + ui->cboMonth->currentText() + "'", "PayrollMonthID").toString();
 
 	if (cMonthID.length() < 1) {
 		QMessageBox::critical(this, "Error", "Month not found.");
 		return;
 	}
+
 	db.exec("UPDATE Company SET CurrentMonth = '" + cMonthID + "'");
 	currentMonth = cMonthID.toInt();
 	currentMonthChanged();
