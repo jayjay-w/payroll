@@ -32,13 +32,23 @@ QString Publics::getSaveFile(QWidget *parent, QString filter)
 
 void Publics::saveSetting(QString settingName, QVariant value)
 {
+#if QT_VERSION > 0x50000
 	QSettings sett(qApp->organizationName(), qApp->applicationDisplayName());
+#endif
+#if QT_VERSION < 0x50000
+	QSettings sett(qApp->organizationName(), qApp->applicationName());
+#endif
 	sett.setValue(settingName, value);
 }
 
 QVariant Publics::getSetting(QString settingName, QVariant defaultValue)
 {
+#if QT_VERSION > 0x50000
 	QSettings sett(qApp->organizationName(), qApp->applicationDisplayName());
+#endif
+#if QT_VERSION < 0x50000
+	QSettings sett(qApp->organizationName(), qApp->applicationName());
+#endif
 	return sett.value(settingName, defaultValue);
 }
 
@@ -70,10 +80,10 @@ QString Publics::getSql(SQL_STRING sqlString)
 		       "'Photo' BLOB)";
 	case SQL_DEPARTMENTS:
 		return "CREATE TABLE IF NOT EXISTS 'Departments' ('DepartmentID'  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-				"'Department' TEXT)";
+		       "'Department' TEXT)";
 	case SQL_JOB_GROUPS:
 		return "CREATE TABLE IF NOT EXISTS 'JobGroups' ('JobGroupID'  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "
-				"'JobGroup' TEXT)";
+		       "'JobGroup' TEXT)";
 	default:
 		return "";
 	}
@@ -95,4 +105,25 @@ QVariant Publics::loadQueryToCombo(QString query, QString col, QComboBox *cbo)
 	while (qu.next()) {
 		cbo->addItem(qu.record().value(col).toString());
 	}
+}
+
+///
+/// \brief Publics::setComboBoxText
+/// useful for pre Qt5 versions that dont have QComboBox::setCurrentText()
+/// \param cbo
+/// \param text
+///
+void Publics::setComboBoxText(QComboBox *cbo, QString text)
+{
+#if QT_VERSION < 0x50000
+	for (int i = 0; i < cbo->count(); i++) {
+		if (cbo->itemText(i) == text) {
+			cbo->setCurrentIndex(i);
+			return;
+		}
+	}
+#endif
+#if QT_VERSION > 0x50000
+	cbo->setCurrentText(text);
+#endif
 }

@@ -100,22 +100,27 @@ void PayrollMainWindow::loadFile(const QString &fileName)
 						       + "' AND Month = '" + QDate::currentDate().toString("MMMM") + "'", "PayrollMonthID").toString();
 		db.exec("UPDATE Company SET CurrentMonth = '" + cMonthID + "'");
 		curMonthID  = cMonthID;
-		ui->cboMonth->setCurrentText(QDate::currentDate().toString("MMMM"));
-		ui->cboYear->setCurrentText(QString::number(QDate::currentDate().year()));
+		Publics::setComboBoxText(ui->cboMonth, QDate::currentDate().toString("MMMM"));
+		Publics::setComboBoxText(ui->cboYear, QString::number(QDate::currentDate().year()));
 	} else {
 		//Update combos
 		QString dbYear = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE PayrollMonthID = '" + curMonthID
 						     + "'", "Year").toString();
 		QString dbMonth = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE PayrollMonthID = '" + curMonthID
 						      + "'", "Month").toString();
-		ui->cboYear->setCurrentText(dbYear);
-		ui->cboMonth->setCurrentText(dbMonth);
+		Publics::setComboBoxText(ui->cboYear, dbYear);
+		Publics::setComboBoxText(ui->cboMonth, dbMonth);
 	}
 	currentMonth = curMonthID.toInt();
 	currentMonthChanged();
 	curFile = fileName;
 	ui->statusBar->showMessage(QString("Opened file: %1").arg(fileName));
+#if QT_VERSION > 0x50000
 	QSettings sett(qApp->organizationName(), qApp->applicationDisplayName());
+#endif
+#if QT_VERSION < 0x50000
+	QSettings sett(qApp->organizationName(), qApp->applicationName());
+#endif
 	QStringList files = sett.value("recentFiles").toStringList();
 	files.removeAll(fileName);
 	files.prepend(fileName);
@@ -148,7 +153,12 @@ QString PayrollMainWindow::strippedName(const QString &fullFileName)
 
 void PayrollMainWindow::updateRecentFileActions()
 {
+#if QT_VERSION > 0x50000
 	QSettings sett(qApp->organizationName(), qApp->applicationDisplayName());
+#endif
+#if QT_VERSION < 0x50000
+	QSettings sett(qApp->organizationName(), qApp->applicationName());
+#endif
 	QStringList files = sett.value("recentFiles").toStringList();
 
 	int numRecentFiles = qMin(files.size(), (int)MaxRecentFiles);

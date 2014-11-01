@@ -118,8 +118,8 @@ void DatabaseInitThread::run()
 				QString yearName = qu.record().value("Year").toString();
 				QSqlQuery qu2 = db.exec("SELECT * FROM MonthNames");
 				while (qu2.next()) {
-					QString monthID = qu2.value("MonthID").toString();
-					QString monthName = qu2.value("MonthName").toString();
+					QString monthID = qu2.record().value("MonthID").toString();
+					QString monthName = qu2.record().value("MonthName").toString();
 
 					db.exec("INSERT INTO PayrollMonths (YearID, MonthID, Year, Month) VALUES ('"
 						+ yearID + "', '" + monthID + "', '" + yearName + "', '" + monthName + "')");

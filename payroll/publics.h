@@ -36,6 +36,7 @@ public:
 	static QString getSql(SQL_STRING sqlString);
 	static QVariant getDbValue(QString query, QString returnCol);
 	static QVariant loadQueryToCombo(QString query = "SELECT NOW()", QString col = "NOW", QComboBox *cbo = 0);
+	static void setComboBoxText(QComboBox *cbo, QString text);
 signals:
 
 public slots:
