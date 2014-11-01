@@ -6,12 +6,20 @@
 #include "paytypesdialog.h"
 #include "employeecentre.h"
 #include "companyinformationdialog.h"
+#include "changemonthdialog.h"
 
-PayrollMainWindow::PayrollMainWindow(QWidget *parent) :
-	QMainWindow(parent),
-	empCentre(0), payTypes(0), companyInfo(0), actionsToDisable(0),
+PayrollMainWindow *PayrollMainWindow::m_instance = NULL;
+
+PayrollMainWindow::PayrollMainWindow() : QMainWindow(),
+	empCentre(0),
+	monthChanger(0),
+	actionsToDisable(0),
+	payTypes(0),
+	companyInfo(0),
 	ui(new Ui::PayrollMainWindow)
 {
+	Q_ASSERT_X(m_instance == NULL, "MainWindow", "MainWindow recreated!");
+	m_instance = this;
 	ui->setupUi(this);
 	//ActionGroup
 	if (!actionsToDisable)
@@ -42,6 +50,7 @@ PayrollMainWindow::PayrollMainWindow(QWidget *parent) :
 	actionsToDisable->addAction(ui->actionRecruit);
 	actionsToDisable->addAction(ui->actionStatutory_Rates);
 	actionsToDisable->addAction(ui->actionUser_Manager);
+	actionsToDisable->addAction(ui->actionChange_Month);
 
 	actionsToDisable->setDisabled(true);
 	//Recent file actions
@@ -57,8 +66,6 @@ PayrollMainWindow::PayrollMainWindow(QWidget *parent) :
 	connect (ui->action_New, SIGNAL(triggered()), SLOT(startNewCompany()));
 	connect (ui->action_Open, SIGNAL(triggered()), SLOT(openFile()));
 	connect (ui->actionClose_Company_Logoff, SIGNAL(triggered()), SLOT(closeFile()));
-	connect (ui->cboMonth, SIGNAL(currentIndexChanged(int)), SLOT(uiMonthChange()));
-	connect (ui->cboYear, SIGNAL(currentIndexChanged(int)), SLOT(uiMonthChange()));
 	//
 	closeFile();
 }
@@ -66,6 +73,11 @@ PayrollMainWindow::PayrollMainWindow(QWidget *parent) :
 PayrollMainWindow::~PayrollMainWindow()
 {
 	delete ui;
+}
+
+PayrollMainWindow *PayrollMainWindow::instance()
+{
+	return m_instance;
 }
 
 void PayrollMainWindow::loadFile(const QString &fileName)
@@ -93,9 +105,6 @@ void PayrollMainWindow::loadFile(const QString &fileName)
 	}
 	//Database open
 	initializeCompanyFile();
-	//Load years and months
-	Publics::loadQueryToCombo("SELECT * FROM Years", "Year", ui->cboYear);
-	Publics::loadQueryToCombo("SELECT * FROM MonthNames", "MonthName", ui->cboMonth);
 	//Check for currentmonth
 	QString curMonthID = Publics::getDbValue("SELECT * FROM Company", "CurrentMonth").toString();
 	qDebug() << curMonthID;
@@ -106,19 +115,9 @@ void PayrollMainWindow::loadFile(const QString &fileName)
 						       + "' AND Month = '" + QDate::currentDate().toString("MMMM") + "'", "PayrollMonthID").toString();
 		db.exec("UPDATE Company SET CurrentMonth = '" + cMonthID + "'");
 		curMonthID  = cMonthID;
-		Publics::setComboBoxText(ui->cboMonth, QDate::currentDate().toString("MMMM"));
-		Publics::setComboBoxText(ui->cboYear, QString::number(QDate::currentDate().year()));
-	} else {
-		//Update combos
-		QString dbYear = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE PayrollMonthID = '" + curMonthID
-						     + "'", "Year").toString();
-		QString dbMonth = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE PayrollMonthID = '" + curMonthID
-						      + "'", "Month").toString();
-		Publics::setComboBoxText(ui->cboYear, dbYear);
-		Publics::setComboBoxText(ui->cboMonth, dbMonth);
 	}
 	currentMonth = curMonthID.toInt();
-	currentMonthChanged();
+	uiMonthChange(QString::number(currentMonth));
 	curFile = fileName;
 	ui->statusBar->showMessage(QString("Opened file: %1").arg(fileName));
 #if QT_VERSION > 0x50000
@@ -216,8 +215,6 @@ void PayrollMainWindow::openFile()
 
 void PayrollMainWindow::closeFile()
 {
-	ui->cboMonth->clear();
-	ui->cboYear->clear();
 	ui->lblCompanyAndCurrentMonth->setText("No company open");
 	actionsToDisable->setEnabled(false);
 	ui->action_Save->setEnabled(false);
@@ -237,66 +234,29 @@ void PayrollMainWindow::openRecentFile()
 void PayrollMainWindow::currentMonthChanged()
 {
 	QString companyName = Publics::getDbValue("SELECT * FROM Company", "CompanyName").toString();
-	QString s_currentMonth = ui->cboYear->currentText() + " " + ui->cboMonth->currentText();
-	ui->lblCompanyAndCurrentMonth->setText(companyName + " " + s_currentMonth);
+	QString s_currentMonth = currentYearName + " " + currentMonthName;
+	ui->lblCompanyAndCurrentMonth->setText(companyName + "-" + s_currentMonth);
 }
 
-void PayrollMainWindow::uiMonthChange()
+void PayrollMainWindow::uiMonthChange(QString newMonthID)
 {
-	QString cMonthID = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE Year = '"
-					       + ui->cboYear->currentText()
-					       + "' AND Month = '" + ui->cboMonth->currentText() + "'", "PayrollMonthID").toString();
+	if (newMonthID.length() < 1)
+		newMonthID = "1";
 
-	if (cMonthID.length() < 1) {
+	currentYearName = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE PayrollMonthID = '"
+						       + newMonthID + "'", "Year").toString();
+
+	currentMonthName = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE PayrollMonthID = '"
+						       + newMonthID + "'", "Month").toString();
+
+	if (newMonthID.length() < 1) {
 		QMessageBox::critical(this, "Error", "Month not found.");
 		return;
 	}
 
-	db.exec("UPDATE Company SET CurrentMonth = '" + cMonthID + "'");
-	currentMonth = cMonthID.toInt();
+	db.exec("UPDATE Company SET CurrentMonth = '" + newMonthID + "'");
+	currentMonth = newMonthID.toInt();
 	currentMonthChanged();
-}
-
-void PayrollMainWindow::on_cmdMonthNext_clicked()
-{
-	int monthIndex = ui->cboMonth->currentIndex();
-	int yearIndex = ui->cboYear->currentIndex();
-	if (monthIndex == 11) {
-		monthIndex = 0;
-		yearIndex = yearIndex + 1;
-	} else {
-		monthIndex = monthIndex + 1;
-	}
-	if (monthIndex > ui->cboMonth->count() - 1)
-		monthIndex = 0;
-
-	if (yearIndex > ui->cboYear->count() - 1)
-		yearIndex = 0;
-
-	ui->cboMonth->setCurrentIndex(monthIndex);
-	ui->cboYear->setCurrentIndex(yearIndex);
-	uiMonthChange();
-}
-
-void PayrollMainWindow::on_cmdMonthBack_clicked()
-{
-	int monthIndex = ui->cboMonth->currentIndex();
-	int yearIndex = ui->cboYear->currentIndex();
-	if (monthIndex == 0) {
-		monthIndex = 11;
-		yearIndex = yearIndex - 1;
-	} else {
-		monthIndex = monthIndex - 1;
-	}
-	if (monthIndex< 0)
-		monthIndex = 11;
-
-	if (yearIndex < 0)
-		yearIndex = 0;
-
-	ui->cboMonth->setCurrentIndex(monthIndex);
-	ui->cboYear->setCurrentIndex(yearIndex);
-	uiMonthChange();
 }
 
 void PayrollMainWindow::on_actionPay_Types_triggered()
@@ -327,5 +287,15 @@ void PayrollMainWindow::on_actionCompany_Info_triggered()
 
 void PayrollMainWindow::companyInformationChanged()
 {
-	uiMonthChange();
+	uiMonthChange(QString::number(currentMonth));
+}
+
+void PayrollMainWindow::on_actionChange_Month_triggered()
+{
+	if (!monthChanger) {
+		monthChanger = new ChangeMonthDialog(this);
+		connect (monthChanger, SIGNAL(monthChanged(QString)), SLOT(uiMonthChange(QString)));
+	}
+
+	monthChanger->exec();
 }

@@ -36,80 +36,6 @@ color: rgb(255, 255, 255);</string>
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QToolButton" name="cmdMonthBack">
-        <property name="text">
-         <string>...</string>
-        </property>
-        <property name="toolButtonStyle">
-         <enum>Qt::ToolButtonIconOnly</enum>
-        </property>
-        <property name="arrowType">
-         <enum>Qt::LeftArrow</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Year:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="cboYear">
-        <property name="minimumSize">
-         <size>
-          <width>100</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Month:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="cboMonth">
-        <property name="minimumSize">
-         <size>
-          <width>150</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QToolButton" name="cmdMonthNext">
-        <property name="text">
-         <string>...</string>
-        </property>
-        <property name="arrowType">
-         <enum>Qt::RightArrow</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
-    <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
        <number>0</number>
@@ -180,6 +106,7 @@ color: rgb(255, 255, 255);</string>
     <addaction name="actionCompany_Info"/>
     <addaction name="separator"/>
     <addaction name="actionClose_Month"/>
+    <addaction name="actionChange_Month"/>
    </widget>
    <widget class="QMenu" name="menuEmployees">
     <property name="title">
@@ -239,10 +166,10 @@ color: rgb(255, 255, 255);</string>
    <addaction name="separator"/>
    <addaction name="actionBackup_Restore"/>
    <addaction name="actionCompany_Info"/>
+   <addaction name="actionChange_Month"/>
    <addaction name="actionEmployee_List"/>
    <addaction name="separator"/>
    <addaction name="actionPay"/>
-   <addaction name="actionPayslips_2"/>
    <addaction name="separator"/>
    <addaction name="actionClose_Company_Logoff"/>
   </widget>
@@ -391,10 +318,6 @@ color: rgb(255, 255, 255);</string>
    </property>
   </action>
   <action name="actionPayslips_2">
-   <property name="icon">
-    <iconset resource="res.qrc">
-     <normaloff>:/images/Calendar-icon.png</normaloff>:/images/Calendar-icon.png</iconset>
-   </property>
    <property name="text">
     <string>Payslips</string>
    </property>
@@ -468,6 +391,15 @@ color: rgb(255, 255, 255);</string>
   <action name="actionSave_As">
    <property name="text">
     <string>Save &amp;As...</string>
+   </property>
+  </action>
+  <action name="actionChange_Month">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/Calendar-icon.png</normaloff>:/images/Calendar-icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Change Month</string>
    </property>
   </action>
  </widget>

@@ -8,6 +8,7 @@ class QActionGroup;
 class EmployeeCentre;
 class PayTypesDialog;
 class CompanyInformationDialog;
+class ChangeMonthDialog;
 
 namespace Ui {
 class PayrollMainWindow;
@@ -18,9 +19,12 @@ class PayrollMainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	explicit PayrollMainWindow(QWidget *parent = 0);
+	explicit PayrollMainWindow();
 	~PayrollMainWindow();
-
+	static PayrollMainWindow *instance();
+	int currentMonth;
+	QString currentMonthName;
+	QString currentYearName;
 private:
 	Ui::PayrollMainWindow *ui;
 	QSqlDatabase db;
@@ -30,7 +34,6 @@ private:
 	void setCurrentFile(const QString &fileName);
 	QString strippedName(const QString &fullFileName);
 	QString curFile;
-	int currentMonth;
 	QString monthName;
 	QString yearName;
 	void updateRecentFileActions();
@@ -39,23 +42,24 @@ private:
 	QActionGroup *actionsToDisable;
 	void initializeCompanyFile();
 	void showQueryError(QSqlQuery qu, QString title = "Error", QString textBefore = "Ther following error has occured:", QString textAfter = "Please contact your administrator.");
+	static PayrollMainWindow *m_instance;
 	//Dialogs
 	EmployeeCentre *empCentre;
 	PayTypesDialog *payTypes;
 	CompanyInformationDialog *companyInfo;
+	ChangeMonthDialog *monthChanger;
 private slots:
 	void startNewCompany();
 	void openFile();
 	void closeFile();
 	void openRecentFile();
 	void currentMonthChanged();
-	void uiMonthChange();
-	void on_cmdMonthNext_clicked();
-	void on_cmdMonthBack_clicked();
+	void uiMonthChange(QString newMonthID);
 	void on_actionPay_Types_triggered();
 	void on_actionEmployee_List_triggered();
 	void on_actionCompany_Info_triggered();
 	void companyInformationChanged();
+	void on_actionChange_Month_triggered();
 };
 
 #endif // PAYROLLMAINWINDOW_H
