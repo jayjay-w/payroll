@@ -26,6 +26,7 @@ public:
 	int currentMonth;
 	QString currentMonthName;
 	QString currentYearName;
+	void showQueryError(QSqlQuery qu, QString title = "Error", QString textBefore = "Ther following error has occured:", QString textAfter = "Please contact your administrator.");
 private:
 	Ui::PayrollMainWindow *ui;
 	QSqlDatabase db;
@@ -41,9 +42,7 @@ private:
 	enum { MaxRecentFiles = 5 };
 	QAction *recentFileActs[MaxRecentFiles];
 	QActionGroup *actionsToDisable;
-	void initializeCompanyFile();
-	void showQueryError(QSqlQuery qu, QString title = "Error", QString textBefore = "Ther following error has occured:", QString textAfter = "Please contact your administrator.");
-	static PayrollMainWindow *m_instance;
+	void initializeCompanyFile();static PayrollMainWindow *m_instance;
 	//Dialogs
 	EmployeeCentre *empCentre;
 	PayTypesDialog *payTypes;
@@ -63,6 +62,7 @@ private slots:
 	void companyInformationChanged();
 	void on_actionChange_Month_triggered();
 	void on_actionAbout_Payroll_triggered();
+	void on_actionRecruit_triggered();
 };
 
 #endif // PAYROLLMAINWINDOW_H

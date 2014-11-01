@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     employeecentre.cpp \
     companyinformationdialog.cpp \
     changemonthdialog.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    startnewemployeedialog.cpp
 
 HEADERS  += payrollmainwindow.h \
     publics.h \
@@ -33,7 +34,8 @@ HEADERS  += payrollmainwindow.h \
     employeecentre.h \
     companyinformationdialog.h \
     changemonthdialog.h \
-    aboutdialog.h
+    aboutdialog.h \
+    startnewemployeedialog.h
 
 FORMS    += payrollmainwindow.ui \
     newcompanydialog.ui \
@@ -42,7 +44,8 @@ FORMS    += payrollmainwindow.ui \
     employeecentre.ui \
     companyinformationdialog.ui \
     changemonthdialog.ui \
-    aboutdialog.ui
+    aboutdialog.ui \
+    startnewemployeedialog.ui
 
 RESOURCES += \
     res.qrc

@@ -8,6 +8,7 @@
 #include "companyinformationdialog.h"
 #include "changemonthdialog.h"
 #include "aboutdialog.h"
+#include "startnewemployeedialog.h"
 
 PayrollMainWindow *PayrollMainWindow::m_instance = NULL;
 
@@ -308,4 +309,13 @@ void PayrollMainWindow::on_actionAbout_Payroll_triggered()
 		aboutPayroll = new AboutDialog(this);
 
 	aboutPayroll->exec();
+}
+
+void PayrollMainWindow::on_actionRecruit_triggered()
+{
+	StartNewEmployeeDialog *startN = new StartNewEmployeeDialog(this);
+	if (startN->exec() == QDialog::Accepted)
+	{
+		on_actionEmployee_List_triggered();
+	}
 }

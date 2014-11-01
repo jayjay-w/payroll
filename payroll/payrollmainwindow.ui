@@ -168,6 +168,7 @@ color: rgb(255, 255, 255);</string>
    <addaction name="actionCompany_Info"/>
    <addaction name="actionChange_Month"/>
    <addaction name="actionEmployee_List"/>
+   <addaction name="actionRecruit"/>
    <addaction name="separator"/>
    <addaction name="actionPay"/>
    <addaction name="separator"/>
@@ -250,8 +251,12 @@ color: rgb(255, 255, 255);</string>
    </property>
   </action>
   <action name="actionRecruit">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/images/Preppy-icon.png</normaloff>:/images/Preppy-icon.png</iconset>
+   </property>
    <property name="text">
-    <string>Recruit</string>
+    <string>New Employee</string>
    </property>
   </action>
   <action name="actionTerminate">
