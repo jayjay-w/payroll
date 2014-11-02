@@ -275,6 +275,7 @@ void PayrollMainWindow::on_actionEmployee_List_triggered()
 	if (!empCentre)
 		empCentre = new EmployeeCentre(this);
 
+	empCentre->reloadEmployeeList();
 	empCentre->exec();
 }
 
@@ -316,6 +317,7 @@ void PayrollMainWindow::on_actionRecruit_triggered()
 	StartNewEmployeeDialog *startN = new StartNewEmployeeDialog(this);
 	if (startN->exec() == QDialog::Accepted)
 	{
+		currentEmployee = startN->empID;
 		on_actionEmployee_List_triggered();
 	}
 }

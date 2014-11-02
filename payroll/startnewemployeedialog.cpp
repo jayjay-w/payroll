@@ -25,6 +25,7 @@ void StartNewEmployeeDialog::on_cmdSaveAndContinue_clicked()
 	if (qu.lastError().isValid()) {
 		PayrollMainWindow::instance()->showQueryError(qu);
 	} else {
+		empID = qu.lastInsertId().toString();
 		this->accept();
 	}
 }

@@ -11,6 +11,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = payroll
 TEMPLATE = app
 
+mac: TARGET = SmartPayroll
+
+DESTDIR = ../build
 
 SOURCES += main.cpp\
         payrollmainwindow.cpp \

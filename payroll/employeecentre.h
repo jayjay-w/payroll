@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+class QTreeWidgetItem;
+
 namespace Ui {
 class EmployeeCentre;
 }
@@ -14,6 +16,13 @@ class EmployeeCentre : public QDialog
 public:
 	explicit EmployeeCentre(QWidget *parent = 0);
 	~EmployeeCentre();
+	QString currentEmployeeId;
+public slots:
+	void setEmployeeID(QString empID);
+	void reloadEmployeeDetails();
+	void reloadEmployeeList();
+private slots:
+	void on_trvEmployees_itemClicked(QTreeWidgetItem *item, int column);
 
 private:
 	Ui::EmployeeCentre *ui;

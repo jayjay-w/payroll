@@ -14,7 +14,7 @@ class StartNewEmployeeDialog : public QDialog
 public:
 	explicit StartNewEmployeeDialog(QWidget *parent = 0);
 	~StartNewEmployeeDialog();
-
+	QString empID;
 private slots:
 	void on_cmdSaveAndContinue_clicked();
 

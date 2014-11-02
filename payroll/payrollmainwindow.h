@@ -26,6 +26,7 @@ public:
 	int currentMonth;
 	QString currentMonthName;
 	QString currentYearName;
+	QString currentEmployee;
 	void showQueryError(QSqlQuery qu, QString title = "Error", QString textBefore = "Ther following error has occured:", QString textAfter = "Please contact your administrator.");
 private:
 	Ui::PayrollMainWindow *ui;
