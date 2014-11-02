@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = payroll
 TEMPLATE = app
 
+INCLUDEPATH += .
+
 mac: TARGET = SmartPayroll
 
 DESTDIR = ../build
@@ -26,7 +28,8 @@ SOURCES += main.cpp\
     companyinformationdialog.cpp \
     changemonthdialog.cpp \
     aboutdialog.cpp \
-    startnewemployeedialog.cpp
+    startnewemployeedialog.cpp \
+    employeeeditor.cpp
 
 HEADERS  += payrollmainwindow.h \
     publics.h \
@@ -38,7 +41,8 @@ HEADERS  += payrollmainwindow.h \
     companyinformationdialog.h \
     changemonthdialog.h \
     aboutdialog.h \
-    startnewemployeedialog.h
+    startnewemployeedialog.h \
+    employeeeditor.h
 
 FORMS    += payrollmainwindow.ui \
     newcompanydialog.ui \
@@ -48,7 +52,8 @@ FORMS    += payrollmainwindow.ui \
     companyinformationdialog.ui \
     changemonthdialog.ui \
     aboutdialog.ui \
-    startnewemployeedialog.ui
+    startnewemployeedialog.ui \
+    employeeeditor.ui
 
 RESOURCES += \
     res.qrc

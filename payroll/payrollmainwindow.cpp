@@ -71,10 +71,16 @@ PayrollMainWindow::PayrollMainWindow() : QMainWindow(),
 	connect (ui->actionClose_Company_Logoff, SIGNAL(triggered()), SLOT(closeFile()));
 	//
 	closeFile();
+	this->setWindowState(Qt::WindowMaximized);
+	this->restoreState(Publics::getSetting("MainWindowState", this->saveState()).toByteArray());
+	ui->employeeDetailsWidget->resize(100, ui->employeeDetailsWidget->height());
+	ui->trvEmployees->resize(ui->trvEmployees->width(), 3000);
 }
 
 PayrollMainWindow::~PayrollMainWindow()
 {
+	Publics::saveSetting("MainWindowSize", this->geometry());
+	Publics::saveSetting("MainWindowState", this->saveState());
 	delete ui;
 }
 
