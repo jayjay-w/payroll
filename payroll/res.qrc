@@ -20,5 +20,7 @@
         <file>images/new-file-icon.png</file>
         <file>images/Files-New-File-icon.png</file>
         <file>images/P.png</file>
+        <file>images/Delete-icon.png</file>
+        <file>images/text-plus-icon.png</file>
     </qresource>
 </RCC>

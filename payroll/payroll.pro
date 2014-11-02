@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     changemonthdialog.cpp \
     aboutdialog.cpp \
     startnewemployeedialog.cpp \
-    employeeeditor.cpp
+    employeeeditor.cpp \
+    kmessagewidget.cpp
 
 HEADERS  += payrollmainwindow.h \
     publics.h \
@@ -42,7 +43,8 @@ HEADERS  += payrollmainwindow.h \
     changemonthdialog.h \
     aboutdialog.h \
     startnewemployeedialog.h \
-    employeeeditor.h
+    employeeeditor.h \
+    kmessagewidget.h
 
 FORMS    += payrollmainwindow.ui \
     newcompanydialog.ui \

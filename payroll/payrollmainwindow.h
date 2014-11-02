@@ -10,6 +10,8 @@ class PayTypesDialog;
 class CompanyInformationDialog;
 class ChangeMonthDialog;
 class AboutDialog;
+class EmployeeEditor;
+class QTreeWidgetItem;
 
 namespace Ui {
 class PayrollMainWindow;
@@ -23,11 +25,17 @@ public:
 	explicit PayrollMainWindow();
 	~PayrollMainWindow();
 	static PayrollMainWindow *instance();
+	EmployeeEditor *empEditor();
 	int currentMonth;
 	QString currentMonthName;
 	QString currentYearName;
-	QString currentEmployee;
+	QString currentEmployeeID;
 	void showQueryError(QSqlQuery qu, QString title = "Error", QString textBefore = "Ther following error has occured:", QString textAfter = "Please contact your administrator.");
+
+public slots:
+	void reloadEmployees();
+	void employeeChanged(QString employeeID);
+	void editCurrentEmployee();
 private:
 	Ui::PayrollMainWindow *ui;
 	QSqlDatabase db;
@@ -64,6 +72,7 @@ private slots:
 	void on_actionChange_Month_triggered();
 	void on_actionAbout_Payroll_triggered();
 	void on_actionRecruit_triggered();
+	void on_trvEmployees_itemClicked(QTreeWidgetItem *item, int column);
 };
 
 #endif // PAYROLLMAINWINDOW_H

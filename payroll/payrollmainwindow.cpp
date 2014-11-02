@@ -10,6 +10,8 @@
 #include "aboutdialog.h"
 #include "startnewemployeedialog.h"
 
+#include <QTreeWidgetItem>
+
 PayrollMainWindow *PayrollMainWindow::m_instance = NULL;
 
 PayrollMainWindow::PayrollMainWindow() : QMainWindow(),
@@ -69,6 +71,8 @@ PayrollMainWindow::PayrollMainWindow() : QMainWindow(),
 	connect (ui->action_New, SIGNAL(triggered()), SLOT(startNewCompany()));
 	connect (ui->action_Open, SIGNAL(triggered()), SLOT(openFile()));
 	connect (ui->actionClose_Company_Logoff, SIGNAL(triggered()), SLOT(closeFile()));
+	connect (ui->employeeDetailsWidget, SIGNAL(editStatus(bool)), ui->trvEmployees, SLOT(setDisabled(bool)));
+	connect (ui->employeeDetailsWidget, SIGNAL(employeeChanged()), this, SLOT(reloadEmployees()));
 	//
 	closeFile();
 	this->setWindowState(Qt::WindowMaximized);
@@ -87,6 +91,11 @@ PayrollMainWindow::~PayrollMainWindow()
 PayrollMainWindow *PayrollMainWindow::instance()
 {
 	return m_instance;
+}
+
+EmployeeEditor *PayrollMainWindow::empEditor()
+{
+	return ui->employeeDetailsWidget;
 }
 
 void PayrollMainWindow::loadFile(const QString &fileName)
@@ -129,6 +138,8 @@ void PayrollMainWindow::loadFile(const QString &fileName)
 	uiMonthChange(QString::number(currentMonth));
 	curFile = fileName;
 	ui->statusBar->showMessage(QString("Opened file: %1").arg(fileName));
+	//Load employee list
+	reloadEmployees();
 #if QT_VERSION > 0x50000
 	QSettings sett(qApp->organizationName(), qApp->applicationDisplayName());
 #endif
@@ -144,9 +155,13 @@ void PayrollMainWindow::loadFile(const QString &fileName)
 
 	sett.setValue("recentFiles", files);
 	updateRecentFileActions();
+	//Enable employee related widgets and actions
 	actionsToDisable->setEnabled(true);
 	ui->action_Save->setEnabled(true);
 	ui->actionSave_As->setEnabled(true);
+	ui->employeeDetailsWidget->setEnabled(true);
+	ui->trvEmployees->setEnabled(true);
+	ui->tabWidget->setEnabled(true);
 }
 
 bool PayrollMainWindow::saveFile(const QString &fileName)
@@ -205,6 +220,55 @@ void PayrollMainWindow::showQueryError(QSqlQuery qu, QString title, QString text
 	QMessageBox::critical(this, title, QString("%1<br/><b>%2</b><br/>%3").arg(textBefore, qu.lastError().text(), textAfter));
 }
 
+void PayrollMainWindow::reloadEmployees()
+{
+	ui->trvEmployees->invisibleRootItem()->takeChildren();
+	QSqlQuery qu = db.exec("SELECT * FROM Employees");
+	if (qu.lastError().isValid()) {
+		showQueryError(qu);
+		currentEmployeeID = "";
+		return;
+	}
+
+	while (qu.next()) {
+		QTreeWidgetItem *it = new QTreeWidgetItem(ui->trvEmployees);
+		it->setText(99, qu.record().value("EmployeeID").toString());
+		it->setText(0, qu.record().value("FirstName").toString() + " " + qu.record().value("MiddleName").toString() + " " + qu.record().value("LastName").toString());
+		it->setText(1, qu.record().value("IDNo").toString());
+		it->setText(2, qu.record().value("PINNo").toString());
+		it->setText(3, qu.record().value("NHIFNo").toString());
+		it->setText(4, qu.record().value("NSSFNo").toString());
+	}
+
+	ui->trvEmployees->resizeColumnToContents(0);
+	employeeChanged(currentEmployeeID);
+}
+
+void PayrollMainWindow::employeeChanged(QString employeeID)
+{
+	currentEmployeeID = employeeID;
+	QFont fnt;
+	for (int i = 0; i < ui->trvEmployees->invisibleRootItem()->childCount(); i++) {
+		QTreeWidgetItem *it = ui->trvEmployees->invisibleRootItem()->child(i);
+		fnt = it->font(0);
+		fnt.setBold(false);
+		it->setFont(0, fnt);
+		if (it->text(99) == employeeID)
+		{
+			fnt.setBold(true);
+			it->setFont(0, fnt);
+			ui->trvEmployees->scrollToItem(it);
+		}
+	}
+
+	this->empEditor()->showEmployeeDetails(false);
+}
+
+void PayrollMainWindow::editCurrentEmployee()
+{
+	this->empEditor()->enableEdition(EmployeeEditor::SINGLE_EMPLOYEE_EDIT);
+}
+
 void PayrollMainWindow::startNewCompany()
 {
 	NewCompanyDialog *newC = new NewCompanyDialog(this);
@@ -228,7 +292,13 @@ void PayrollMainWindow::closeFile()
 	actionsToDisable->setEnabled(false);
 	ui->action_Save->setEnabled(false);
 	ui->actionSave_As->setEnabled(false);
+	ui->employeeDetailsWidget->clearEmployee();
+	ui->employeeDetailsWidget->setEnabled(false);
+	ui->trvEmployees->setEnabled(false);
+	ui->tabWidget->setEnabled(false);
 	curFile = "";
+	currentEmployeeID = "";
+	ui->trvEmployees->invisibleRootItem()->takeChildren();
 	if (db.isOpen())
 		db.close();
 }
@@ -253,10 +323,10 @@ void PayrollMainWindow::uiMonthChange(QString newMonthID)
 		newMonthID = "1";
 
 	currentYearName = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE PayrollMonthID = '"
-						       + newMonthID + "'", "Year").toString();
+					      + newMonthID + "'", "Year").toString();
 
 	currentMonthName = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE PayrollMonthID = '"
-						       + newMonthID + "'", "Month").toString();
+					       + newMonthID + "'", "Month").toString();
 
 	if (newMonthID.length() < 1) {
 		QMessageBox::critical(this, "Error", "Month not found.");
@@ -323,7 +393,13 @@ void PayrollMainWindow::on_actionRecruit_triggered()
 	StartNewEmployeeDialog *startN = new StartNewEmployeeDialog(this);
 	if (startN->exec() == QDialog::Accepted)
 	{
-		currentEmployee = startN->empID;
+		currentEmployeeID = startN->empID;
 		on_actionEmployee_List_triggered();
 	}
+}
+
+void PayrollMainWindow::on_trvEmployees_itemClicked(QTreeWidgetItem *item, int column)
+{
+	Q_UNUSED(column);
+	employeeChanged(item->text(99));
 }
