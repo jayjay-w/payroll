@@ -73,6 +73,7 @@ PayrollMainWindow::PayrollMainWindow() : QMainWindow(),
 	connect (ui->actionClose_Company_Logoff, SIGNAL(triggered()), SLOT(closeFile()));
 	connect (ui->employeeDetailsWidget, SIGNAL(editStatus(bool)), ui->trvEmployees, SLOT(setDisabled(bool)));
 	connect (ui->employeeDetailsWidget, SIGNAL(employeeChanged()), this, SLOT(reloadEmployees()));
+	connect (ui->employeeDetailsWidget, SIGNAL(employeeDeleted()), this, SLOT(handleEmployeeDelete()));
 	//
 	closeFile();
 	this->setWindowState(Qt::WindowMaximized);
@@ -266,6 +267,12 @@ void PayrollMainWindow::employeeChanged(QString employeeID)
 void PayrollMainWindow::editCurrentEmployee()
 {
 	this->empEditor()->enableEdition(EmployeeEditor::SINGLE_EMPLOYEE_EDIT);
+}
+
+void PayrollMainWindow::handleEmployeeDelete()
+{
+	currentEmployeeID = "";
+	reloadEmployees();
 }
 
 void PayrollMainWindow::startNewCompany()

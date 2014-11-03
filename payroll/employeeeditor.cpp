@@ -31,6 +31,7 @@ EmployeeEditor::EmployeeEditor(QWidget *parent) :
 	connect (ui->txtLastName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
 
 	connect (ui->cmdAddNew, SIGNAL(clicked()), SLOT(startAddEmployee()));
+	connect (ui->cmdDelete, SIGNAL(clicked()), SLOT(deleteEmployee()));
 }
 
 EmployeeEditor::~EmployeeEditor()
@@ -195,6 +196,23 @@ void EmployeeEditor::startAddEmployee()
 {
 	enableEdition(ADD);
 	Publics::clearTextBoxes(this);
+}
+
+void EmployeeEditor::deleteEmployee()
+{
+	if (editMode == SINGLE_EMPLOYEE_DISPLAY) {
+		//In display mode of a single employee. Start deletion
+		if (QMessageBox::question(this, "Confirm Delete", "Are you sure you want to delete this employee?", QMessageBox::Yes, QMessageBox::No) ==QMessageBox::No )
+			return;
+
+		//All OK
+		QSqlDatabase::database().exec("DELETE FROM Employees WHERE EmployeeID = '" + PayrollMainWindow::instance()->currentEmployeeID + "'");
+		emit employeeDeleted();
+		editMode = IGNORE;
+		enableEdition(IGNORE);
+		Publics::clearTextBoxes(this);
+
+	}
 }
 
 void EmployeeEditor::lineEditTextChanged(const QString &arg1)

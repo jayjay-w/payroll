@@ -38,10 +38,12 @@ public slots:
 	void clearEmployee();
 
 	void startAddEmployee();
+	void deleteEmployee();
 signals:
 	void addEmployeeFinished();
 	void editStatus(bool);
 	void employeeChanged();
+	void employeeDeleted();
 private slots:
 	void lineEditTextChanged(const QString &arg1);
 

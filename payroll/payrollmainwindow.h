@@ -36,6 +36,7 @@ public slots:
 	void reloadEmployees();
 	void employeeChanged(QString employeeID);
 	void editCurrentEmployee();
+	void handleEmployeeDelete();
 private:
 	Ui::PayrollMainWindow *ui;
 	QSqlDatabase db;
