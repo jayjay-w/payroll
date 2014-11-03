@@ -22,13 +22,34 @@ EmployeeEditor::EmployeeEditor(QWidget *parent) :
 
 	setEnabled(false);
 
-	ui->txtFirstName->installEventFilter(this);
-	ui->txtLastName->installEventFilter(this);
-	ui->txtMiddleName->installEventFilter(this);
+//	ui->txtFirstName->installEventFilter(this);
+//	ui->txtLastName->installEventFilter(this);
+//	ui->txtMiddleName->installEventFilter(this);
+//	ui->txtIDNo->installEventFilter(this);
+//	ui->txtPINNo->installEventFilter(this);
+//	ui->txtNHIFNo->installEventFilter(this);
+//	ui->txtNSSFNo->installEventFilter(this);
+//	ui->txtTel->installEventFilter(this);
+//	ui->txtEmail->installEventFilter(this);
+//	ui->txtAddress->installEventFilter(this);
+//	ui->txtPostcode->installEventFilter(this);
+//	ui->txtTown->installEventFilter(this);
 
-	connect (ui->txtFirstName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-	connect (ui->txtMiddleName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-	connect (ui->txtLastName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtFirstName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtMiddleName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtLastName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtIDNo, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtPINNo, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtNSSFNo, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtNHIFNo, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtTel, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtEmail, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtAddress, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtPostcode, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+//	connect (ui->txtTown, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+
+	setTXTEvtFilters(this);
+	connectTXT(this);
 
 	connect (ui->cmdAddNew, SIGNAL(clicked()), SLOT(startAddEmployee()));
 	connect (ui->cmdDelete, SIGNAL(clicked()), SLOT(deleteEmployee()));
@@ -49,18 +70,38 @@ void EmployeeEditor::acceptChanges()
 	QString query = "SELECT * FROM Company";
 	if (editMode == SINGLE_EMPLOYEE_EDIT || editMode == SINGLE_EMPLOYEE_DISPLAY)
 		query = "UPDATE Employees SET "
-			"FirstName = '" + ui->txtFirstName->text()
+				"FirstName = '" + ui->txtFirstName->text()
 				+ "', MiddleName = '" + ui->txtMiddleName->text()
 				+ "', LastName = '" + ui->txtLastName->text()
+				+ "', IDNo = '" + ui->txtIDNo->text()
+				+ "', PINNo = '" + ui->txtPINNo->text()
+				+ "', NHIFNo = '" + ui->txtNHIFNo->text()
+				+ "', NSSFNo = '" + ui->txtNSSFNo->text()
+				+ "', PhoneNo = '" + ui->txtTel->text()
+				+ "', Email = '" + ui->txtEmail->text()
+				+ "', Address = '" + ui->txtAddress->text()
+				+ "', Postcode = '" + ui->txtPostcode->text()
+				+ "', Town = '" + ui->txtTown->text()
 				+ "' WHERE EmployeeID = '"
 				+ PayrollMainWindow::instance()->currentEmployeeID + "'";
 
 	if (editMode == ADD)
 		query = "INSERT INTO Employees "
-			"(FirstName, MiddleName, LastName) VALUES "
-			"('" + ui->txtFirstName->text()
+				"(FirstName, MiddleName, LastName, IDNo, PINNo, NSSFNo, "
+				"NHIFNo, PhoneNo, Email, Address, Postcode, Town"
+				") VALUES "
+				"('" + ui->txtFirstName->text()
 				+ "', '" + ui->txtMiddleName->text()
 				+ "', '" + ui->txtLastName->text()
+				+ "', '" + ui->txtIDNo->text()
+				+ "', '" + ui->txtPINNo->text()
+				+ "', '" + ui->txtNSSFNo->text()
+				+ "', '" + ui->txtNHIFNo->text()
+				+ "', '" + ui->txtTel->text()
+				+ "', '" + ui->txtEmail->text()
+				+ "', '" + ui->txtAddress->text()
+				+ "', '" + ui->txtPostcode->text()
+				+ "', '" + ui->txtTown->text()
 				+ "')";
 
 	QSqlQuery qu = QSqlDatabase::database().exec(query);
@@ -126,6 +167,15 @@ void EmployeeEditor::showEmployeeDetails(bool clear)
 		ui->txtFirstName->setText(qu.record().value("FirstName").toString());
 		ui->txtMiddleName->setText(qu.record().value("MiddleName").toString());
 		ui->txtLastName->setText(qu.record().value("LastName").toString());
+		ui->txtIDNo->setText(qu.record().value("IDNo").toString());
+		ui->txtPINNo->setText(qu.record().value("PINNo").toString());
+		ui->txtNSSFNo->setText(qu.record().value("NSSFNo").toString());
+		ui->txtNHIFNo->setText(qu.record().value("NHIFNo").toString());
+		ui->txtTel->setText(qu.record().value("PhoneNo").toString());
+		ui->txtEmail->setText(qu.record().value("Email").toString());
+		ui->txtAddress->setText(qu.record().value("Address").toString());
+		ui->txtPostcode->setText(qu.record().value("Postcode").toString());
+		ui->txtTown->setText(qu.record().value("Town").toString());
 
 		editMode = SINGLE_EMPLOYEE_DISPLAY;
 
@@ -181,10 +231,7 @@ void EmployeeEditor::enableEdition(EmployeeEditor::EditMode newEditMode)
 
 void EmployeeEditor::resetPalette()
 {
-	QPalette p;
-	ui->txtFirstName->setPalette(p);
-	ui->txtMiddleName->setPalette(p);
-	ui->txtLastName->setPalette(p);
+	resetTXTPalette(this);
 }
 
 void EmployeeEditor::clearEmployee()
@@ -228,6 +275,58 @@ void EmployeeEditor::lineEditTextChanged(const QString &arg1)
 
 	QLineEdit *txt = qobject_cast<QLineEdit *>(sender());
 	markChangedWidget(txt);
+}
+
+void EmployeeEditor::setTXTEvtFilters(QWidget *parent)
+{
+	QPalette p;
+	for (int i = 0; i < parent->children().count(); i++) {
+		if (qobject_cast<QLineEdit *>(parent->children().at(i))) {
+			QLineEdit *txt = qobject_cast<QLineEdit *>(parent->children().at(i));
+			txt->installEventFilter(this);
+		}
+		if (parent->children().at(i)->children().count() > 0) {
+			if (qobject_cast<QWidget *>(parent->children().at(i))) {
+				QWidget *wid = qobject_cast<QWidget *>(parent->children().at(i));
+				setTXTEvtFilters(wid);
+			}
+		}
+	}
+}
+
+
+void EmployeeEditor::connectTXT(QWidget *parent)
+{
+	QPalette p;
+	for (int i = 0; i < parent->children().count(); i++) {
+		if (qobject_cast<QLineEdit *>(parent->children().at(i))) {
+			QLineEdit *txt = qobject_cast<QLineEdit *>(parent->children().at(i));
+			connect(txt, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+		}
+		if (parent->children().at(i)->children().count() > 0) {
+			if (qobject_cast<QWidget *>(parent->children().at(i))) {
+				QWidget *wid = qobject_cast<QWidget *>(parent->children().at(i));
+				connectTXT(wid);
+			}
+		}
+	}
+}
+
+void EmployeeEditor::resetTXTPalette(QWidget *parent)
+{
+	QPalette p;
+	for (int i = 0; i < parent->children().count(); i++) {
+		if (qobject_cast<QLineEdit *>(parent->children().at(i))) {
+			QLineEdit *txt = qobject_cast<QLineEdit *>(parent->children().at(i));
+			txt->setPalette(p);
+		}
+		if (parent->children().at(i)->children().count() > 0) {
+			if (qobject_cast<QWidget *>(parent->children().at(i))) {
+				QWidget *wid = qobject_cast<QWidget *>(parent->children().at(i));
+				resetTXTPalette(wid);
+			}
+		}
+	}
 }
 
 void EmployeeEditor::markChangedWidget(QWidget *w)
