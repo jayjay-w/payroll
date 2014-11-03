@@ -41,9 +41,7 @@ signals:
 	void editStatus(bool);
 	void employeeChanged();
 private slots:
-	void on_txtFirstName_textChanged(const QString &arg1);
-	void on_txtMiddleName_textChanged(const QString &arg1);
-	void on_txtLastName_textChanged(const QString &arg1);
+	void lineEditTextChanged(const QString &arg1);
 
 private:
 	Ui::EmployeeEditor *ui;

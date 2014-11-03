@@ -25,6 +25,10 @@ EmployeeEditor::EmployeeEditor(QWidget *parent) :
 	ui->txtFirstName->installEventFilter(this);
 	ui->txtLastName->installEventFilter(this);
 	ui->txtMiddleName->installEventFilter(this);
+
+	connect (ui->txtFirstName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+	connect (ui->txtMiddleName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+	connect (ui->txtLastName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
 }
 
 EmployeeEditor::~EmployeeEditor()
@@ -39,12 +43,6 @@ bool EmployeeEditor::isEditing()
 
 void EmployeeEditor::acceptChanges()
 {
-	modified = false;
-	emit editStatus(false);
-	enableEdition(IGNORE);
-	closeMessage();
-	resetPalette();
-
 	QString query = "UPDATE Employees SET "
 			"FirstName = '" + ui->txtFirstName->text() + "', "
 			"MiddleName = '" + ui->txtMiddleName->text() + "', "
@@ -54,9 +52,17 @@ void EmployeeEditor::acceptChanges()
 	QSqlQuery qu = QSqlDatabase::database().exec(query);
 
 	if (qu.lastError().isValid()) {
+		//In case of an error, show message and stop right here
 		PayrollMainWindow::instance()->showQueryError(qu);
+		return;
 	}
 
+	//No error, reset UI
+	modified = false;
+	emit editStatus(false);
+	enableEdition(IGNORE);
+	closeMessage();
+	resetPalette();
 	emit employeeChanged();
 	showEmployeeDetails(false);
 }
@@ -68,6 +74,7 @@ void EmployeeEditor::rejectChanges()
 	enableEdition(IGNORE);
 	closeMessage();
 	resetPalette();
+	//Revert to original details
 	showEmployeeDetails(false);
 }
 
@@ -154,6 +161,16 @@ void EmployeeEditor::clearEmployee()
 	Publics::clearTextBoxes(this);
 }
 
+void EmployeeEditor::lineEditTextChanged(const QString &arg1)
+{
+	Q_UNUSED(arg1);
+	if (editMode == IGNORE)
+		return;
+
+	QLineEdit *txt = qobject_cast<QLineEdit *>(sender());
+	markChangedWidget(txt);
+}
+
 void EmployeeEditor::markChangedWidget(QWidget *w)
 {
 	QPalette p;
@@ -176,29 +193,3 @@ void EmployeeEditor::addMessageAction(QAction *action)
 }
 
 
-void EmployeeEditor::on_txtFirstName_textChanged(const QString &arg1)
-{
-	Q_UNUSED(arg1);
-	if (editMode == IGNORE)
-		return;
-
-	markChangedWidget(ui->txtFirstName);
-}
-
-void EmployeeEditor::on_txtMiddleName_textChanged(const QString &arg1)
-{
-	Q_UNUSED(arg1);
-	if (editMode == IGNORE)
-		return;
-
-	markChangedWidget(ui->txtMiddleName);
-}
-
-void EmployeeEditor::on_txtLastName_textChanged(const QString &arg1)
-{
-	Q_UNUSED(arg1);
-	if (editMode == IGNORE)
-		return;
-
-	markChangedWidget(ui->txtLastName);
-}
