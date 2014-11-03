@@ -36,6 +36,8 @@ public slots:
 	void enableEdition(EditMode newEditMode = NONE);
 	void resetPalette();
 	void clearEmployee();
+
+	void startAddEmployee();
 signals:
 	void addEmployeeFinished();
 	void editStatus(bool);

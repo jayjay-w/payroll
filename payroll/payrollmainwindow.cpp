@@ -100,7 +100,6 @@ EmployeeEditor *PayrollMainWindow::empEditor()
 
 void PayrollMainWindow::loadFile(const QString &fileName)
 {
-	qDebug() << fileName;
 
 	if (fileName.isNull()) {
 		openFile();
@@ -125,7 +124,7 @@ void PayrollMainWindow::loadFile(const QString &fileName)
 	initializeCompanyFile();
 	//Check for currentmonth
 	QString curMonthID = Publics::getDbValue("SELECT * FROM Company", "CurrentMonth").toString();
-	qDebug() << curMonthID;
+
 	if (curMonthID.length() < 1) {
 		//No current month specified, so use the current calendar month
 		QString cMonthID = Publics::getDbValue("SELECT * FROM PayrollMonths WHERE Year = '"

@@ -29,6 +29,8 @@ EmployeeEditor::EmployeeEditor(QWidget *parent) :
 	connect (ui->txtFirstName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
 	connect (ui->txtMiddleName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
 	connect (ui->txtLastName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
+
+	connect (ui->cmdAddNew, SIGNAL(clicked()), SLOT(startAddEmployee()));
 }
 
 EmployeeEditor::~EmployeeEditor()
@@ -43,11 +45,23 @@ bool EmployeeEditor::isEditing()
 
 void EmployeeEditor::acceptChanges()
 {
-	QString query = "UPDATE Employees SET "
-			"FirstName = '" + ui->txtFirstName->text() + "', "
-			"MiddleName = '" + ui->txtMiddleName->text() + "', "
-			"LastName = '" + ui->txtLastName->text() + "'"
-			" WHERE EmployeeID = '" + PayrollMainWindow::instance()->currentEmployeeID + "'";
+	QString query = "SELECT * FROM Company";
+	qDebug() << editMode;
+	if (editMode == SINGLE_EMPLOYEE_EDIT || editMode == SINGLE_EMPLOYEE_DISPLAY)
+		query = "UPDATE Employees SET "
+			"FirstName = '" + ui->txtFirstName->text()
+				+ "', MiddleName = '" + ui->txtMiddleName->text()
+				+ "', LastName = '" + ui->txtLastName->text()
+				+ "' WHERE EmployeeID = '"
+				+ PayrollMainWindow::instance()->currentEmployeeID + "'";
+
+	if (editMode == ADD)
+		query = "INSERT INTO Employees "
+			"(FirstName, MiddleName, LastName) VALUES "
+			"('" + ui->txtFirstName->text()
+				+ "', '" + ui->txtMiddleName->text()
+				+ "', '" + ui->txtLastName->text()
+				+ "')";
 
 	QSqlQuery qu = QSqlDatabase::database().exec(query);
 
@@ -60,20 +74,30 @@ void EmployeeEditor::acceptChanges()
 	//No error, reset UI
 	modified = false;
 	emit editStatus(false);
-	enableEdition(IGNORE);
 	closeMessage();
 	resetPalette();
-	emit employeeChanged();
+
+	ui->cmdAddNew->setEnabled(true);
+	ui->cmdDelete->setEnabled(true);
+
+	if (editMode == ADD)
+		PayrollMainWindow::instance()->employeeChanged(qu.lastInsertId().toString());
+
+	enableEdition(SINGLE_EMPLOYEE_DISPLAY);
 	showEmployeeDetails(false);
+	emit employeeChanged();
 }
 
 void EmployeeEditor::rejectChanges()
 {
+	editMode = NONE;
 	emit editStatus(false);
 	modified = false;
 	enableEdition(IGNORE);
 	closeMessage();
 	resetPalette();
+	ui->cmdAddNew->setEnabled(true);
+	ui->cmdDelete->setEnabled(true);
 	//Revert to original details
 	showEmployeeDetails(false);
 }
@@ -81,8 +105,9 @@ void EmployeeEditor::rejectChanges()
 void EmployeeEditor::showEmployeeDetails(bool clear)
 {
 	//don't execute this while adding / editing an employee
-	if (editMode == ADD || editMode == SINGLE_EMPLOYEE_EDIT)
+	if (editMode == ADD || editMode == SINGLE_EMPLOYEE_EDIT) {
 		return;
+	}
 
 
 	if (!isEnabled() && !clear)
@@ -131,20 +156,28 @@ void EmployeeEditor::displayMessage(QString str)
 
 void EmployeeEditor::enableEdition(EmployeeEditor::EditMode newEditMode)
 {
-//	if (((newEditMode == SINGLE_EMPLOYEE_DISPLAY || newEditMode == NONE) && PayrollMainWindow::instance()->currentEmployeeID.length() < 0
-//		) || editMode != NONE)
-//		return;
-
+	qDebug() << editMode << newEditMode;
 	if (newEditMode == IGNORE)
 		return;
 
-	if (newEditMode == SINGLE_EMPLOYEE_DISPLAY)
-	{
-		PayrollMainWindow::instance()->editCurrentEmployee();;
+	if (newEditMode == SINGLE_EMPLOYEE_EDIT || newEditMode == ADD) {
+		ui->cmdAddNew->setEnabled(false);
+		ui->cmdDelete->setEnabled(false);
+	}
+
+	if (newEditMode == SINGLE_EMPLOYEE_EDIT) {
+		displayMessage("This employee is being edited.");
+		editMode = newEditMode;
 		return;
 	}
 
-	displayMessage("This employee is being edited.");
+	if (newEditMode == ADD) {
+		displayMessage("Adding a new employee");
+		Publics::clearTextBoxes(this);
+		editMode = newEditMode;
+		return;
+	}
+
 	editMode = newEditMode != NONE ? newEditMode : SINGLE_EMPLOYEE_DISPLAY;
 }
 
@@ -161,10 +194,16 @@ void EmployeeEditor::clearEmployee()
 	Publics::clearTextBoxes(this);
 }
 
+void EmployeeEditor::startAddEmployee()
+{
+	enableEdition(ADD);
+	Publics::clearTextBoxes(this);
+}
+
 void EmployeeEditor::lineEditTextChanged(const QString &arg1)
 {
 	Q_UNUSED(arg1);
-	if (editMode == IGNORE)
+	if (editMode == IGNORE || editMode == ADD)
 		return;
 
 	QLineEdit *txt = qobject_cast<QLineEdit *>(sender());
@@ -184,6 +223,8 @@ void EmployeeEditor::markChangedWidget(QWidget *w)
 		modified = true;
 		emit editStatus(true);
 		enableEdition();
+		if (editMode == SINGLE_EMPLOYEE_DISPLAY)
+			enableEdition(SINGLE_EMPLOYEE_EDIT);
 	}
 }
 

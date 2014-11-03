@@ -2,6 +2,7 @@
 #include <QSettings>
 
 #include <QLineEdit>
+#include <QDebug>
 
 Publics::Publics(QObject *parent) :
 	QObject(parent)
@@ -145,10 +146,17 @@ void Publics::clearTextBoxes(QWidget *parent)
 				if (wid->children().count() > 0) {
 					clearTextBoxes(wid);
 				}
+
+				if (qobject_cast<QLineEdit *>(parent)) {
+					QLineEdit *txt = qobject_cast<QLineEdit *>(parent);
+					txt->setText("");
+				}
+
 			}
 		} else {
 			if (qobject_cast<QLineEdit *>(parent->children().at(i))) {
 				QLineEdit *txt = qobject_cast<QLineEdit *>(parent->children().at(i));
+				qDebug() << txt->objectName();
 				txt->setText("");
 			}
 //			if (qobject_cast<QComboBox *>(parent->children().at(i))) {
