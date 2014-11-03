@@ -46,7 +46,6 @@ bool EmployeeEditor::isEditing()
 void EmployeeEditor::acceptChanges()
 {
 	QString query = "SELECT * FROM Company";
-	qDebug() << editMode;
 	if (editMode == SINGLE_EMPLOYEE_EDIT || editMode == SINGLE_EMPLOYEE_DISPLAY)
 		query = "UPDATE Employees SET "
 			"FirstName = '" + ui->txtFirstName->text()
@@ -156,7 +155,6 @@ void EmployeeEditor::displayMessage(QString str)
 
 void EmployeeEditor::enableEdition(EmployeeEditor::EditMode newEditMode)
 {
-	qDebug() << editMode << newEditMode;
 	if (newEditMode == IGNORE)
 		return;
 
@@ -173,7 +171,6 @@ void EmployeeEditor::enableEdition(EmployeeEditor::EditMode newEditMode)
 
 	if (newEditMode == ADD) {
 		displayMessage("Adding a new employee");
-		Publics::clearTextBoxes(this);
 		editMode = newEditMode;
 		return;
 	}
@@ -203,8 +200,13 @@ void EmployeeEditor::startAddEmployee()
 void EmployeeEditor::lineEditTextChanged(const QString &arg1)
 {
 	Q_UNUSED(arg1);
-	if (editMode == IGNORE || editMode == ADD)
+	if (editMode == IGNORE)
 		return;
+
+	if (editMode == ADD) {
+		enableEdition(ADD);
+		return;
+	}
 
 	QLineEdit *txt = qobject_cast<QLineEdit *>(sender());
 	markChangedWidget(txt);

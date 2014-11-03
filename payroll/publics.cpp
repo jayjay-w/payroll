@@ -139,30 +139,22 @@ void Publics::setComboBoxText(QComboBox *cbo, QString text)
 void Publics::clearTextBoxes(QWidget *parent)
 {
 	for (int i = 0; i < parent->children().count(); i++) {
-
+		if (qobject_cast<QLineEdit *>(parent->children().at(i))) {
+			QLineEdit *txt = qobject_cast<QLineEdit *>(parent->children().at(i));
+			txt->setText("");
+		}
 		if (parent->children().at(i)->children().count() > 0) {
 			if (qobject_cast<QWidget *>(parent->children().at(i))) {
 				QWidget *wid = qobject_cast<QWidget *>(parent->children().at(i));
 				if (wid->children().count() > 0) {
 					clearTextBoxes(wid);
 				}
-
-				if (qobject_cast<QLineEdit *>(parent)) {
-					QLineEdit *txt = qobject_cast<QLineEdit *>(parent);
-					txt->setText("");
-				}
-
 			}
 		} else {
 			if (qobject_cast<QLineEdit *>(parent->children().at(i))) {
 				QLineEdit *txt = qobject_cast<QLineEdit *>(parent->children().at(i));
-				qDebug() << txt->objectName();
 				txt->setText("");
 			}
-//			if (qobject_cast<QComboBox *>(parent->children().at(i))) {
-//				QComboBox *cbo = qobject_cast<QComboBox *>(parent->children().at(i));
-//				cbo->setCurrentIndex(0);
-//			}
 		}
 	}
 }
