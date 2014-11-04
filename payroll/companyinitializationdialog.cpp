@@ -183,6 +183,43 @@ void DatabaseInitThread::run()
 			db.exec("INSERT INTO PayTypes (PayCategory, PayType) VALUES ('Deduction', 'Welfare')");
 		}
 	}
+
+	//Insert departments
+	qu = db.exec("SELECT Count(DepartmentID) as 'cnt' FROM Deparments");
+	if (!qu.lastError().isValid()) {
+		qu.first();
+		int cnt = qu.record().value("cnt").toInt();
+		if (cnt < 1) {
+			//No departments
+			emit status("Creating departmens");
+			//Insert departments
+			db.exec("INSERT INTO Departments (Department) VALUES ('-No Department-')");
+			db.exec("INSERT INTO Departments (Department) VALUES ('Administration')");
+			db.exec("INSERT INTO Departments (Department) VALUES ('Management')");
+			db.exec("INSERT INTO Departments (Department) VALUES ('Finance')");
+			db.exec("INSERT INTO Departments (Department) VALUES ('Sales')");
+			db.exec("INSERT INTO Departments (Department) VALUES ('I.T.')");
+			db.exec("INSERT INTO Departments (Department) VALUES ('Maintenance')");
+			db.exec("INSERT INTO Departments (Department) VALUES ('Logistics')");
+		}
+	}
+
+	//Insert jo groups
+	qu = db.exec("SELECT Count(JobGroupID) as 'cnt' FROM JobGroups");
+	if (!qu.lastError().isValid()) {
+		qu.first();
+		int cnt = qu.record().value("cnt").toInt();
+		if (cnt < 1) {
+			//No j groups
+			emit status("Creating job groups");
+			//Insert job groups
+			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('-No Job Group-')");
+			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('A')");
+			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('B')");
+			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('C')");
+			db.exec("INSERT INTO JobGroups (JobGroup) VALUES ('D')");
+		}
+	}
 }
 
 void DatabaseInitThread::executeInitSql(QString sql)
