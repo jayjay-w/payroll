@@ -22,32 +22,6 @@ EmployeeEditor::EmployeeEditor(QWidget *parent) :
 
 	setEnabled(false);
 
-//	ui->txtFirstName->installEventFilter(this);
-//	ui->txtLastName->installEventFilter(this);
-//	ui->txtMiddleName->installEventFilter(this);
-//	ui->txtIDNo->installEventFilter(this);
-//	ui->txtPINNo->installEventFilter(this);
-//	ui->txtNHIFNo->installEventFilter(this);
-//	ui->txtNSSFNo->installEventFilter(this);
-//	ui->txtTel->installEventFilter(this);
-//	ui->txtEmail->installEventFilter(this);
-//	ui->txtAddress->installEventFilter(this);
-//	ui->txtPostcode->installEventFilter(this);
-//	ui->txtTown->installEventFilter(this);
-
-//	connect (ui->txtFirstName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtMiddleName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtLastName, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtIDNo, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtPINNo, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtNSSFNo, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtNHIFNo, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtTel, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtEmail, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtAddress, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtPostcode, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-//	connect (ui->txtTown, SIGNAL(textChanged(QString)), SLOT(lineEditTextChanged(QString)));
-
 	setTXTEvtFilters(this);
 	connectTXT(this);
 
