@@ -177,10 +177,10 @@
         </widget>
        </item>
        <item row="13" column="2">
-        <widget class="QComboBox" name="comboBox"/>
+        <widget class="QComboBox" name="cboDepartment"/>
        </item>
        <item row="14" column="2">
-        <widget class="QComboBox" name="comboBox_2"/>
+        <widget class="QComboBox" name="cboJobGroup"/>
        </item>
        <item row="15" column="3">
         <spacer name="verticalSpacer">
@@ -201,7 +201,7 @@
           <string>&amp;Department:</string>
          </property>
          <property name="buddy">
-          <cstring>comboBox</cstring>
+          <cstring>cboDepartment</cstring>
          </property>
         </widget>
        </item>
@@ -247,7 +247,7 @@
           <string>&amp;Job Group:</string>
          </property>
          <property name="buddy">
-          <cstring>comboBox_2</cstring>
+          <cstring>cboJobGroup</cstring>
          </property>
         </widget>
        </item>
@@ -348,8 +348,8 @@
   <tabstop>txtAddress</tabstop>
   <tabstop>txtPostcode</tabstop>
   <tabstop>txtTown</tabstop>
-  <tabstop>comboBox</tabstop>
-  <tabstop>comboBox_2</tabstop>
+  <tabstop>cboDepartment</tabstop>
+  <tabstop>cboJobGroup</tabstop>
   <tabstop>pushButton_2</tabstop>
   <tabstop>tableView</tabstop>
   <tabstop>pushButton</tabstop>

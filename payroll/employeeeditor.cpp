@@ -135,6 +135,8 @@ void EmployeeEditor::showEmployeeDetails(bool clear)
 	//reset palette
 	resetPalette();
 	if (!clear) {
+		Publics::loadQueryToCombo("SELECT * FROM Departments", "Department", ui->cboDepartment);
+		Publics::loadQueryToCombo("SELECT * FROM JobGroups", "JobGroup", ui->cboJobGroup);
 		QSqlQuery qu = QSqlDatabase::database().exec("SELECT * FROM Employees WHERE EmployeeID = '" + PayrollMainWindow::instance()->currentEmployeeID
 							     + "'");
 		qu.first();

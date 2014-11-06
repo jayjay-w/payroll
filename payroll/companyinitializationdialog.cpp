@@ -185,7 +185,7 @@ void DatabaseInitThread::run()
 	}
 
 	//Insert departments
-	qu = db.exec("SELECT Count(DepartmentID) as 'cnt' FROM Deparments");
+	qu = db.exec("SELECT Count(DepartmentID) as 'cnt' FROM Departments");
 	if (!qu.lastError().isValid()) {
 		qu.first();
 		int cnt = qu.record().value("cnt").toInt();
