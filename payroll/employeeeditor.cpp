@@ -27,6 +27,9 @@ EmployeeEditor::EmployeeEditor(QWidget *parent) :
 
 	connect (ui->cmdAddNew, SIGNAL(clicked()), SLOT(startAddEmployee()));
 	connect (ui->cmdDelete, SIGNAL(clicked()), SLOT(deleteEmployee()));
+
+	connect (ui->cboDepartment, SIGNAL(currentIndexChanged(int)), SLOT(cboChanged()));
+	connect (ui->cboJobGroup, SIGNAL(currentIndexChanged(int)), SLOT(cboChanged()));
 }
 
 EmployeeEditor::~EmployeeEditor()
@@ -42,6 +45,8 @@ bool EmployeeEditor::isEditing()
 void EmployeeEditor::acceptChanges()
 {
 	QString query = "SELECT * FROM Company";
+	QString dept_id = Publics::getDbValue("SELECT * FROM Departments WHERE Department = '" + ui->cboDepartment->currentText() + "'", "DepartmentID").toString();
+	QString j_grp_id = Publics::getDbValue("SELECT * FROM JobGroups WHERE JobGroup = '" + ui->cboJobGroup->currentText() + "'", "JobGroupID").toString();;
 	if (editMode == SINGLE_EMPLOYEE_EDIT || editMode == SINGLE_EMPLOYEE_DISPLAY)
 		query = "UPDATE Employees SET "
 				"FirstName = '" + ui->txtFirstName->text()
@@ -55,6 +60,8 @@ void EmployeeEditor::acceptChanges()
 				+ "', Email = '" + ui->txtEmail->text()
 				+ "', Address = '" + ui->txtAddress->text()
 				+ "', Postcode = '" + ui->txtPostcode->text()
+				+ "', DepartmentID = '" + dept_id
+				+ "', GroupID = '" + j_grp_id
 				+ "', Town = '" + ui->txtTown->text()
 				+ "' WHERE EmployeeID = '"
 				+ PayrollMainWindow::instance()->currentEmployeeID + "'";
@@ -62,7 +69,7 @@ void EmployeeEditor::acceptChanges()
 	if (editMode == ADD)
 		query = "INSERT INTO Employees "
 				"(FirstName, MiddleName, LastName, IDNo, PINNo, NSSFNo, "
-				"NHIFNo, PhoneNo, Email, Address, Postcode, Town"
+				"NHIFNo, PhoneNo, Email, DepartmentID, GroupID, Address, Postcode, Town"
 				") VALUES "
 				"('" + ui->txtFirstName->text()
 				+ "', '" + ui->txtMiddleName->text()
@@ -73,6 +80,8 @@ void EmployeeEditor::acceptChanges()
 				+ "', '" + ui->txtNHIFNo->text()
 				+ "', '" + ui->txtTel->text()
 				+ "', '" + ui->txtEmail->text()
+				+ "', '" + dept_id
+				+ "', '" + j_grp_id
 				+ "', '" + ui->txtAddress->text()
 				+ "', '" + ui->txtPostcode->text()
 				+ "', '" + ui->txtTown->text()
@@ -153,12 +162,23 @@ void EmployeeEditor::showEmployeeDetails(bool clear)
 		ui->txtPostcode->setText(qu.record().value("Postcode").toString());
 		ui->txtTown->setText(qu.record().value("Town").toString());
 
+		QString dept_id = qu.record().value("DepartmentID").toString();
+		QString grp_id = qu.record().value("GroupID").toString();
+
+		ui->cboDepartment->setCurrentIndex(0);
+		ui->cboJobGroup->setCurrentIndex(0);
+
+		Publics::setComboBoxText(ui->cboDepartment, Publics::getDbValue("SELECT * FROM Departments WHERE DepartmentID = '" + dept_id + "'", "Department").toString());
+		Publics::setComboBoxText(ui->cboJobGroup, Publics::getDbValue("SELECT * FROM JobGroups WHERE JobGroupID = '" + grp_id + "'", "JobGroup").toString());
+
 		editMode = SINGLE_EMPLOYEE_DISPLAY;
 
 		modified = false;
 	} else {
 		/* clear the fields */
 		Publics::clearTextBoxes(this);
+		ui->cboDepartment->setCurrentIndex(0);
+		ui->cboJobGroup->setCurrentIndex(0);
 	}
 }
 
@@ -213,12 +233,16 @@ void EmployeeEditor::resetPalette()
 void EmployeeEditor::clearEmployee()
 {
 	Publics::clearTextBoxes(this);
+	ui->cboDepartment->setCurrentIndex(0);
+	ui->cboJobGroup->setCurrentIndex(0);
 }
 
 void EmployeeEditor::startAddEmployee()
 {
 	enableEdition(ADD);
 	Publics::clearTextBoxes(this);
+	ui->cboDepartment->setCurrentIndex(0);
+	ui->cboJobGroup->setCurrentIndex(0);
 }
 
 void EmployeeEditor::deleteEmployee()
@@ -234,7 +258,8 @@ void EmployeeEditor::deleteEmployee()
 		editMode = IGNORE;
 		enableEdition(IGNORE);
 		Publics::clearTextBoxes(this);
-
+		ui->cboDepartment->setCurrentIndex(0);
+		ui->cboJobGroup->setCurrentIndex(0);
 	}
 }
 
@@ -251,6 +276,25 @@ void EmployeeEditor::lineEditTextChanged(const QString &arg1)
 
 	QLineEdit *txt = qobject_cast<QLineEdit *>(sender());
 	markChangedWidget(txt);
+}
+
+void EmployeeEditor::cboChanged()
+{
+	if (editMode == IGNORE)
+		return;
+
+	if (editMode == ADD) {
+		enableEdition(ADD);
+		return;
+	}
+
+	if (!modified) {
+		modified = true;
+		emit editStatus(true);
+		enableEdition();
+		if (editMode == SINGLE_EMPLOYEE_DISPLAY)
+			enableEdition(SINGLE_EMPLOYEE_EDIT);
+	}
 }
 
 void EmployeeEditor::setTXTEvtFilters(QWidget *parent)

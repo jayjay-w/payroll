@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     aboutdialog.cpp \
     startnewemployeedialog.cpp \
     employeeeditor.cpp \
-    kmessagewidget.cpp
+    kmessagewidget.cpp \
+    employeelistview.cpp
 
 HEADERS  += payrollmainwindow.h \
     publics.h \
@@ -44,7 +45,8 @@ HEADERS  += payrollmainwindow.h \
     aboutdialog.h \
     startnewemployeedialog.h \
     employeeeditor.h \
-    kmessagewidget.h
+    kmessagewidget.h \
+    employeelistview.h
 
 FORMS    += payrollmainwindow.ui \
     newcompanydialog.ui \

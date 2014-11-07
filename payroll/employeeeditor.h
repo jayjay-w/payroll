@@ -46,6 +46,7 @@ signals:
 	void employeeDeleted();
 private slots:
 	void lineEditTextChanged(const QString &arg1);
+	void cboChanged();
 	void setTXTEvtFilters(QWidget *parent);
 	void connectTXT(QWidget *parent);
 	void resetTXTPalette(QWidget *parent);

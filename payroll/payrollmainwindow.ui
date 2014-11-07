@@ -217,10 +217,6 @@ color: rgb(255, 255, 255);</string>
     <property name="title">
      <string>Employees</string>
     </property>
-    <addaction name="actionEmployee_List"/>
-    <addaction name="separator"/>
-    <addaction name="actionRecruit"/>
-    <addaction name="actionTerminate"/>
     <addaction name="separator"/>
     <addaction name="actionPay"/>
     <addaction name="actionEnter_OT"/>
@@ -272,8 +268,6 @@ color: rgb(255, 255, 255);</string>
    <addaction name="actionBackup_Restore"/>
    <addaction name="actionCompany_Info"/>
    <addaction name="actionChange_Month"/>
-   <addaction name="actionEmployee_List"/>
-   <addaction name="actionRecruit"/>
    <addaction name="separator"/>
    <addaction name="actionPay"/>
    <addaction name="separator"/>
