@@ -1,6 +1,6 @@
 #include "employeelistview.h"
 
-EmployeeListView::EmployeeListView(QObject *parent) :
+EmployeeListView::EmployeeListView(QWidget *parent) :
 	QTreeView(parent)
 {
 }

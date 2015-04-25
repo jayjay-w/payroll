@@ -8,7 +8,7 @@ class EmployeeListView : public QTreeView
 {
 	Q_OBJECT
 public:
-	explicit EmployeeListView(QObject *parent = 0);
+	explicit EmployeeListView(QWidget *parent = 0);
 
 signals:
 
